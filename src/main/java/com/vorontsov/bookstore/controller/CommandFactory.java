@@ -40,7 +40,7 @@ public class CommandFactory implements Closeable {
         closeables = new ArrayList<>();
 
         ConfigPropertiesImpl configProperties = new ConfigPropertiesImpl();
-        Properties property = configProperties.getProperties("config.properties");
+        Properties property = configProperties.getProperties("application.properties");
 
         String url = property.getProperty("db.url");
         String user = property.getProperty("db.user");
