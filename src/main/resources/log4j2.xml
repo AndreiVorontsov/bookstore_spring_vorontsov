@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error" strict="true">
+    <Properties>
+        <property name="stdPattern">%d{yyyy MM dd hh:mm:ss} [%t] %-5level %logger{5} - %msg%n</property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console">
+            <Layout type="PatternLayout" pattern="${stdPattern}"/>
+        </Console>
+        <File name="LOGFile"
+              filename="log4j2.log">
+            <Layout type="PatternLayout" pattern="${stdPattern}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="Console" level="info"/>
+<!--            <AppenderRef ref="LOGFile" level="info"/>-->
+        </Root>
+
+<!--        <Logger name="com.vorontsov.bookstore" level="debug" additivity="false">-->
+<!--            <AppenderRef ref="Console"/>-->
+<!--        </Logger>-->
+        <Logger name="com.vorontsov.bookstore" level="debug" >
+            <AppenderRef ref="LOGFile"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>
