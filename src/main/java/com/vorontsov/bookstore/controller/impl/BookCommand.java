@@ -6,9 +6,11 @@ import com.vorontsov.bookstore.service.ServiceBook;
 import com.vorontsov.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+
 import java.time.LocalDateTime;
 
-
+@Controller("book")
 @RequiredArgsConstructor
 public class BookCommand implements Command {
     private final ServiceBook serviceBook;

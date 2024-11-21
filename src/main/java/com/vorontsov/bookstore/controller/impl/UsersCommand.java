@@ -1,7 +1,6 @@
 package com.vorontsov.bookstore.controller.impl;
 
 import com.vorontsov.bookstore.controller.Command;
-import com.vorontsov.bookstore.data.config.ConfigPropertiesImpl;
 import com.vorontsov.bookstore.data.connection.DataSource;
 import com.vorontsov.bookstore.data.connection.DataSourceImpl;
 import com.vorontsov.bookstore.data.dao.UserDAO;
@@ -17,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 
+@Controller("users")
 @RequiredArgsConstructor
 public class UsersCommand implements Command {
     private final ServiceUser serviceUser;

@@ -10,9 +10,11 @@ import com.vorontsov.bookstore.service.mapper.Mapper;
 import com.vorontsov.bookstore.service.mapper.MapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 @Log4j2
 public class ServiceUserImpl implements ServiceUser {

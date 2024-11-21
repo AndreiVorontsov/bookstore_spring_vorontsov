@@ -1,19 +1,25 @@
 package com.vorontsov.bookstore.data.connection;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Component
 @Log4j2
 public class DataSourceImpl implements Closeable, DataSource {
-private ConnectionPool connectionPool;
+public ConnectionPool connectionPool;
 
-    public DataSourceImpl(String url, String user, String password, int poolSize, String driver) {
-        connectionPool = new ConnectionPool(driver, url, user, password, poolSize);
-        log.info("Connection pool initialized");
+@Autowired
+    public DataSourceImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     @Override

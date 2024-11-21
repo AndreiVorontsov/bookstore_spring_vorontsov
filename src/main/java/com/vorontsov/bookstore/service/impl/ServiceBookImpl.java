@@ -1,30 +1,26 @@
 package com.vorontsov.bookstore.service.impl;
 
 import com.vorontsov.bookstore.data.dao.BookDAO;
-import com.vorontsov.bookstore.data.dao.impl.BookDAOJBDCImpl;
-import com.vorontsov.bookstore.data.connection.DataSource;
+import com.vorontsov.bookstore.data.entity.Book;
 import com.vorontsov.bookstore.service.ServiceBook;
 import com.vorontsov.bookstore.service.dto.BookDto;
-import com.vorontsov.bookstore.data.entity.Book;
-
 import com.vorontsov.bookstore.service.mapper.Mapper;
-import com.vorontsov.bookstore.service.mapper.MapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Service
 @RequiredArgsConstructor
 @Log4j2
 public class ServiceBookImpl implements ServiceBook {
     private final BookDAO bookDAO;
     private final Mapper mapperImpl;
-
-
 
     @Override
     public List<BookDto> getAll() {

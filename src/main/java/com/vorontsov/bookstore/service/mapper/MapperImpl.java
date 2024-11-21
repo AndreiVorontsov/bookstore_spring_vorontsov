@@ -4,7 +4,10 @@ import com.vorontsov.bookstore.data.entity.Book;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MapperImpl implements Mapper {
 
     @Override

@@ -1,9 +1,12 @@
 package com.vorontsov.bookstore.service;
 
 import com.vorontsov.bookstore.service.dto.BookDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 
 public interface ServiceBook {
 

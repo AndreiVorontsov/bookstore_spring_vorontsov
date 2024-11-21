@@ -1,6 +1,12 @@
 package com.vorontsov.bookstore.data.connection;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,12 +14,18 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+@Component
 @Log4j2
-class ConnectionPool {
+public class ConnectionPool {
     private final BlockingQueue<ProxyConnection> freeConnection;
     private final int poolSize;
 
-    public ConnectionPool(String driver, String url, String user, String password, int poolSize) {
+    @Autowired
+    public ConnectionPool(@Value("${db.driver}") String driver,
+                          @Value("${db.url}")String url,
+                          @Value("${db.user}")String user,
+                          @Value("${db.password}")String password,
+                          @Value("${db.poolSize}")int poolSize) {
         this.freeConnection = new LinkedBlockingDeque<>();
         this.poolSize = poolSize;
         try {

@@ -1,9 +1,12 @@
 package com.vorontsov.bookstore.data.entity;
 
 import lombok.Data;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+
 
 @Data
 public class Book {
