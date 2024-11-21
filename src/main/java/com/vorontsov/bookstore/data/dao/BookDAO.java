@@ -1,8 +1,11 @@
 package com.vorontsov.bookstore.data.dao;
 
 import com.vorontsov.bookstore.data.entity.Book;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+
 public interface BookDAO {
     Book create(Book book);
 

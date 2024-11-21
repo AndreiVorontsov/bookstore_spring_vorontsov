@@ -5,6 +5,8 @@ import com.vorontsov.bookstore.data.dao.BookDAO;
 import com.vorontsov.bookstore.data.entity.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,12 +18,10 @@ import java.util.List;
 
 import static com.vorontsov.bookstore.data.entity.Book.Cover;
 
+@Repository
 @RequiredArgsConstructor
 @Log4j2
 public class BookDAOJBDCImpl implements BookDAO {
-//    private static final String URL = "jdbc:postgresql://localhost:5432/bookstore_bh";
-//    private static final String USER = "postgres";
-//    private static final String PASSWORD = "5093";
 
     private static final String INSERT_SQL = "insert into books (name, author, isbn, cover,price,year_Publication) values (?,?,?,?,?,?)";
     private static final String GET_ALL_BOOK_SQL = "select id,name,author,Isbn,cover,Price,Year_Publication,delete from books";

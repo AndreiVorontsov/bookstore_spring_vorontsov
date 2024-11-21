@@ -1,7 +1,6 @@
 package com.vorontsov.bookstore.controller.impl;
 
 import com.vorontsov.bookstore.controller.Command;
-import com.vorontsov.bookstore.data.config.ConfigPropertiesImpl;
 import com.vorontsov.bookstore.data.connection.DataSource;
 import com.vorontsov.bookstore.data.connection.DataSourceImpl;
 import com.vorontsov.bookstore.data.dao.UserDAO;

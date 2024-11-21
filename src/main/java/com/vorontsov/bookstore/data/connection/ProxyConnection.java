@@ -1,6 +1,8 @@
 package com.vorontsov.bookstore.data.connection;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -21,6 +23,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+@Component
+@Scope("prototype")
 @RequiredArgsConstructor
 public class ProxyConnection implements Connection {
     private final Connection connection;
