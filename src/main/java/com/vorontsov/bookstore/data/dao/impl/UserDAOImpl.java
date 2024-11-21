@@ -3,12 +3,15 @@ package com.vorontsov.bookstore.data.dao.impl;
 import com.vorontsov.bookstore.data.connection.DataSource;
 import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.entity.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Repository
+@RequiredArgsConstructor
 @Log4j2
 public class UserDAOImpl implements UserDAO {
     private static final String INSERT_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (?,?,?,?,?,(SELECT id FROM roles WHERE value = ?))";
@@ -18,12 +21,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String GET_COUNT_ALL_SQL = "SELECT count(*) FROM users";
     private static final String UPDATE_SQL = "UPDATE users SET surName = ?, name = ?, lastName = ?, email = ?,password = ?,role = (SELECT id FROM roles WHERE value = ?) where id = ?";
     private static final String DEL_BY_EMAIL_SQL = "DELETE FROM books where email = ?";
-
     private final DataSource dataSource;
-
-    public UserDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public User create(User user) {
