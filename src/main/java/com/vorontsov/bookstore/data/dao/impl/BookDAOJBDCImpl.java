@@ -72,19 +72,20 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public List<Book> getAll() {
-        List<Book> books = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(GET_ALL_BOOK_SQL);
-            log.debug("get ALL book:");
-            while (resultSet.next()) {
-                books.add(process(resultSet));
-            }
-        } catch (SQLException e) {
-            log.error("get ALL book - Error");
-            throw new RuntimeException(e);
-        }
-        return books;
+        return template.query(GET_ALL_BOOK_SQL,this::mapRow);
+//        List<Book> books = new ArrayList<>();
+//        try (Connection connection = dataSource.getConnection()) {
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery(GET_ALL_BOOK_SQL);
+//            log.debug("get ALL book:");
+//            while (resultSet.next()) {
+//                books.add(process(resultSet));
+//            }
+//        } catch (SQLException e) {
+//            log.error("get ALL book - Error");
+//            throw new RuntimeException(e);
+//        }
+//        return books;
     }
 
     @Override
