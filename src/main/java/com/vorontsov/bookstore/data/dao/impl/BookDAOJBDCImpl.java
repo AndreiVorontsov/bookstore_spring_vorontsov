@@ -37,9 +37,6 @@ public class BookDAOJBDCImpl implements BookDAO {
     private final DataSource dataSource;
     private final JdbcTemplate template;
 
-//    public BookDAOJBDCImpl(DataSource dataSource) {
-//        this.dataSource = dataSource;
-//    }
 
     @Override
     public Book create(Book book) {
@@ -73,19 +70,6 @@ public class BookDAOJBDCImpl implements BookDAO {
     @Override
     public List<Book> getAll() {
         return template.query(GET_ALL_BOOK_SQL,this::mapRow);
-//        List<Book> books = new ArrayList<>();
-//        try (Connection connection = dataSource.getConnection()) {
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery(GET_ALL_BOOK_SQL);
-//            log.debug("get ALL book:");
-//            while (resultSet.next()) {
-//                books.add(process(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            log.error("get ALL book - Error");
-//            throw new RuntimeException(e);
-//        }
-//        return books;
     }
 
     @Override
@@ -144,16 +128,7 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public boolean deleteById(long id) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DEL_BY_ID_SQL);
-            statement.setLong(1, id);
-            log.debug("Delete by id " + id);
-            int rowsDeleted = statement.executeUpdate();
-            return rowsDeleted > 0;
-        } catch (SQLException e) {
-            log.error("Delete by id " + id);
-            throw new RuntimeException(e);
-        }
+        return template.update(DEL_BY_ID_SQL, id) == 1;
     }
 
     @Override

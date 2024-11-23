@@ -111,16 +111,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteByEmail(String email) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DEL_BY_EMAIL_SQL);
-            statement.setString(1, email);
-            log.debug("Delete by Email" + email  );
-            int rowsDeleted = statement.executeUpdate();
-            return rowsDeleted > 0;
-        } catch (SQLException e) {
-            log.error("Delete by Email" + email);
-            throw new RuntimeException(e);
-        }
+        return template.update(DEL_BY_EMAIL_SQL,email) ==1;
     }
 
     @Override
