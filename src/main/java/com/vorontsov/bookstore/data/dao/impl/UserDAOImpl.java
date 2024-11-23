@@ -48,19 +48,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAll() {
-        List<User> users = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection()) {
-            Statement statement = connection.createStatement();
-            log.debug("Get All user :");
-            ResultSet resultSet = statement.executeQuery(GET_ALL_USER_SQL);
-            while (resultSet.next()) {
-                users.add(process(resultSet));
-            }
-        } catch (SQLException e) {
-            log.error("Get All user :");
-            throw new RuntimeException(e);
-        }
-        return users;
+        return template.query(GET_ALL_USER_SQL, this::mapRow);
     }
 
     private User process(ResultSet resultSet) throws SQLException {
