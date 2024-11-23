@@ -6,11 +6,15 @@ import com.vorontsov.bookstore.data.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 @Log4j2
@@ -21,9 +25,11 @@ public class UserDAOImpl implements UserDAO {
     private static final String GET_BY_LASTNAME_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id WHERE u.lastName = ?";
     private static final String GET_COUNT_ALL_SQL = "SELECT count(*) FROM users";
     private static final String UPDATE_SQL = "UPDATE users SET surName = ?, name = ?, lastName = ?, email = ?,password = ?,role = (SELECT id FROM roles WHERE value = ?) where id = ?";
+    private static final String UPDATE_NP_SQL = "UPDATE users SET surName = :surName, name = :name, lastName = :lastName, email = :email,password = :password,role = (SELECT id FROM roles WHERE value = :value) where id = :id";
     private static final String DEL_BY_EMAIL_SQL = "DELETE FROM books where email = ?";
     private final DataSource dataSource;
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedTemplate;
 
     @Override
     public User create(User user) {
@@ -66,7 +72,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findByEmail(String email) {
-       return template.queryForObject(GET_BY_EMAIL_SQL, this::mapRow,email);
+        return template.queryForObject(GET_BY_EMAIL_SQL, this::mapRow, email);
     }
 
     @Override
@@ -87,49 +93,43 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
-
-
     @Override
     public User update(User user) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
-            statement.setString(1, user.getSurName());
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getLastName());
-            statement.setString(4, user.getEmail());
-            statement.setString(5, user.getPassword());
-            statement.setString(6, user.getRole().toString());
-            statement.setLong(7, user.getId());
-            log.debug("Update:" + user);
-            statement.executeUpdate();
-            return findByEmail(user.getEmail());
-        } catch (SQLException e) {
-            log.error("Update:" + user);
-            throw new RuntimeException(e);
-        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("surName",user.getSurName());
+        map.put("name",user.getName());
+        map.put("lastName",user.getLastName());
+        map.put("email",user.getEmail());
+        map.put("password",user.getPassword());
+        map.put("value",user.getRole());
+        map.put("id",user.getId());
+        namedTemplate.update(UPDATE_NP_SQL,map);
+
+        return findByEmail(user.getEmail());
     }
 
     @Override
     public boolean deleteByEmail(String email) {
-        return template.update(DEL_BY_EMAIL_SQL,email) ==1;
+        return template.update(DEL_BY_EMAIL_SQL, email) == 1;
     }
 
     @Override
     public long countAll() {
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_COUNT_ALL_SQL);
             log.debug("Get count ALL");
-            if (statement.execute()){
+            if (statement.execute()) {
                 ResultSet resultSet = statement.getResultSet();
                 resultSet.next();
                 return resultSet.getLong(1);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             log.error("Get count ALL");
             throw new RuntimeException(e);
         }
         throw new RuntimeException("");
     }
+
     private User mapRow(ResultSet rs, int num) throws SQLException {
         User user = new User();
         user.setId(rs.getLong("id"));

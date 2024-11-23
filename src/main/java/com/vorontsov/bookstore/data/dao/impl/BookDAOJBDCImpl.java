@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -15,7 +16,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.vorontsov.bookstore.data.entity.Book.Cover;
 
@@ -31,11 +34,13 @@ public class BookDAOJBDCImpl implements BookDAO {
     private static final String DEL_BY_ID_SQL = "DELETE FROM books where id = ?";
     private static final String GET_BY_AUTHOR_SQL = "select id,name,author,Isbn,cover,Price,Year_Publication,delete from books where Author = ?";
     private static final String UPDATE_SQL = "update books set name = ?, author = ?, isbn = ?, cover = ?,price = ?,Year_Publication = ? where id = ?";
+    private static final String UPDATE_NP_SQL = "update books set name = :name, author = :author, isbn = :isbn, cover = :cover,price = :price,Year_Publication = :Year_Publication where id = :id";
     private static final String SOFT_DELETE_SQL = "update books set delete = ? where id = ?";
     private static final String GET_COUNT_ALL_SQL = "select count(*) from books";
     //private static final String GET_INFO_COLUMNS_SQL = "select collation_name from information_schema.columns where table_name = 'books' and column_name = ?";
     private final DataSource dataSource;
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedTemplate;
 
 
     @Override
@@ -107,22 +112,17 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public Book update(Book book) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
-            statement.setString(1, book.getName());
-            statement.setString(2, book.getAuthor());
-            statement.setString(3, book.getIsbn());
-            statement.setString(4, String.valueOf((book.getCover())));
-            statement.setBigDecimal(5, book.getPrice());
-            statement.setInt(6, book.getYearPublication());
-            statement.setLong(7, book.getId());
-            log.debug("Update" + book);
-            statement.executeUpdate();
-            return getById(book.getId());
-        } catch (SQLException e) {
-            log.error("Update" + book);
-            throw new RuntimeException(e);
-        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", book.getName());
+        map.put("author", book.getAuthor());
+        map.put("isbn", book.getIsbn());
+        map.put("cover", book.getCover());
+        map.put("price", book.getPrice());
+        map.put("Year_Publication", book.getYearPublication());
+        map.put("id", book.getId());
+        namedTemplate.update(UPDATE_NP_SQL, map);
+
+        return getById(book.getId());
 
     }
 
