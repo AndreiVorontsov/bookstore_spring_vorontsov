@@ -5,6 +5,7 @@ import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -22,6 +23,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_SQL = "UPDATE users SET surName = ?, name = ?, lastName = ?, email = ?,password = ?,role = (SELECT id FROM roles WHERE value = ?) where id = ?";
     private static final String DEL_BY_EMAIL_SQL = "DELETE FROM books where email = ?";
     private final DataSource dataSource;
+    private final JdbcTemplate template;
 
     @Override
     public User create(User user) {
@@ -76,19 +78,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findByEmail(String email) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_EMAIL_SQL);
-            statement.setString(1, email);
-            log.debug("Find by Email " + email + ":");
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return process(resultSet);
-            }
-        } catch (SQLException e) {
-            log.error("Find by Email " + email);
-            throw new RuntimeException(e);
-        }
-        return null;
+       return template.queryForObject(GET_BY_EMAIL_SQL, this::mapRow,email);
     }
 
     @Override
@@ -160,5 +150,17 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException(e);
         }
         throw new RuntimeException("");
+    }
+    private User mapRow(ResultSet rs, int num) throws SQLException {
+        User user = new User();
+        user.setId(rs.getLong("id"));
+        user.setSurName(rs.getString("surname"));
+        user.setName(rs.getString("name"));
+        user.setLastName(rs.getString("lastname"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(User.Role.valueOf(rs.getString("value").toString()));
+        log.debug(user);
+        return user;
     }
 }
