@@ -6,6 +6,7 @@ import com.vorontsov.bookstore.data.entity.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -34,6 +35,7 @@ public class BookDAOJBDCImpl implements BookDAO {
     private static final String GET_COUNT_ALL_SQL = "select count(*) from books";
     //private static final String GET_INFO_COLUMNS_SQL = "select collation_name from information_schema.columns where table_name = 'books' and column_name = ?";
     private final DataSource dataSource;
+    private final JdbcTemplate template;
 
 //    public BookDAOJBDCImpl(DataSource dataSource) {
 //        this.dataSource = dataSource;
@@ -87,19 +89,21 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public Book getById(long id) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_BY_ID_SQL);
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            log.debug("get by id " + id + ":");
-            if (resultSet.next()) {
-                return process(resultSet);
-            }
-        } catch (SQLException e) {
-            log.error("get by id -"  + id);
-            throw new RuntimeException(e);
-        }
-        return null;
+       return template.queryForObject(GET_BY_ID_SQL,this::mapRow,id);
+    }
+
+    private Book mapRow(ResultSet rs, int num) throws SQLException {
+        Book book = new Book();
+        book.setId(rs.getLong("id"));
+        book.setName(rs.getString("name"));
+        book.setAuthor(rs.getString("author"));
+        book.setIsbn(rs.getString("Isbn"));
+        book.setCover(Cover.valueOf(rs.getString("cover")));
+        book.setPrice(rs.getBigDecimal("Price"));
+        book.setYearPublication(rs.getInt("Year_Publication"));
+        book.setDelete(rs.getBoolean("delete"));
+        log.debug(book);
+        return book;
     }
 
     private Book process(ResultSet resultSet) throws SQLException {
