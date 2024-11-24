@@ -4,7 +4,6 @@ import com.vorontsov.bookstore.data.entity.Book;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +22,7 @@ public class MapperImpl implements Mapper {
         bookDto.setDelete(book.isDelete());
         return bookDto;
     }
+
     @Override
     public Book mapToBook(BookDto bookDto) {
         Book book = new Book();
@@ -36,6 +36,7 @@ public class MapperImpl implements Mapper {
         book.setDelete(bookDto.isDelete());
         return book;
     }
+
     @Override
     public User mapToUser(UserDto userDto) {
         User user = new User();
@@ -48,6 +49,7 @@ public class MapperImpl implements Mapper {
         user.setRole(User.Role.valueOf(userDto.getRole().toString()));
         return user;
     }
+
     @Override
     public UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();

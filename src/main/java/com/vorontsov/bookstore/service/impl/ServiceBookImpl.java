@@ -7,7 +7,6 @@ import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -49,8 +48,8 @@ public class ServiceBookImpl implements ServiceBook {
         log.debug("Get by Isbn" + isbn);
         Book book = bookDAO.findByIsbn(isbn);
         if (book == null) {
-           return null;
-        }else{
+            return null;
+        } else {
             return mapperImpl.mapToBookDto(bookDAO.findByIsbn(isbn));
         }
 
@@ -60,9 +59,9 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto create(BookDto bookDto) {
         log.debug("Create: " + bookDto);
-        if (getByIsbn(bookDto.getIsbn()) == null){
+        if (getByIsbn(bookDto.getIsbn()) == null) {
             return mapperImpl.mapToBookDto(bookDAO.create(mapperImpl.mapToBook(bookDto)));
-        } else{
+        } else {
             return null;
         }
     }
@@ -70,26 +69,28 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto update(BookDto bookDto) {
         log.debug("Update: " + bookDto);
-        if(getByIsbn(bookDto.getIsbn()).getId() == bookDto.getId()) {
+        if (getByIsbn(bookDto.getIsbn()).getId() == bookDto.getId()) {
             return mapperImpl.mapToBookDto(bookDAO.update(mapperImpl.mapToBook(bookDto)));
-        }else{ return null;}
+        } else {
+            return null;
+        }
     }
 
 
     @Override
     public void delete(long id) {
         log.debug("Delete" + id);
-       boolean success = bookDAO.deleteById(id);
-       if(!success){
-           log.error("Couldn't delete book (id=" + id + ")");
-           throw new RuntimeException("Couldn't delete book (id=" + id + ")");
-       }
+        boolean success = bookDAO.deleteById(id);
+        if (!success) {
+            log.error("Couldn't delete book (id=" + id + ")");
+            throw new RuntimeException("Couldn't delete book (id=" + id + ")");
+        }
     }
 
     @Override
     public void softDelete(long id, boolean bool) {
-        boolean success = bookDAO.softDeleteById(id,bool);
-        if(!success){
+        boolean success = bookDAO.softDeleteById(id, bool);
+        if (!success) {
             log.error("Couldn't softDelete book (id=" + id + ")");
             throw new RuntimeException("Couldn't softDelete book (id=" + id + ")");
         }
@@ -102,7 +103,7 @@ public class ServiceBookImpl implements ServiceBook {
         for (Book book : bookDAO.findByAuthor(author)) {
             if (book.getPrice() != null) {
                 summ = summ.add(book.getPrice());
-            }else{
+            } else {
                 log.debug("Not Price" + book);
             }
         }

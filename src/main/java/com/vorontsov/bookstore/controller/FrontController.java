@@ -17,16 +17,14 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        try{
+        try {
             String commandParam = req.getParameter("command");
-//            Command command = CommandFactory.INSTANCE.get(commandParam);
-            Command command = AppListener.getContext().getBean(commandParam,Command.class);
-                    String page = command.process(req);
+            Command command = AppListener.getContext().getBean(commandParam, Command.class);
+            String page = command.process(req);
             req.getRequestDispatcher(page).forward(req, resp);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e);
-//            Command command = CommandFactory.INSTANCE.get("error");
-            Command command = AppListener.getContext().getBean("error",Command.class);
+            Command command = AppListener.getContext().getBean("error", Command.class);
             String page = command.process(req);
             req.setAttribute("exception", e);
             req.getRequestDispatcher(page).forward(req, resp);

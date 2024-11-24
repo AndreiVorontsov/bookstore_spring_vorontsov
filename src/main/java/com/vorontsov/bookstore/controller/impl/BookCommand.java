@@ -1,6 +1,5 @@
 package com.vorontsov.bookstore.controller.impl;
 
-
 import com.vorontsov.bookstore.controller.Command;
 import com.vorontsov.bookstore.service.ServiceBook;
 import com.vorontsov.bookstore.service.dto.BookDto;
@@ -16,7 +15,7 @@ public class BookCommand implements Command {
     private final ServiceBook serviceBook;
 
     @Override
-    public String process(HttpServletRequest req){
+    public String process(HttpServletRequest req) {
         long id = getId(req);
         BookDto book = serviceBook.getById(id);
         req.setAttribute("book", book);

@@ -1,8 +1,6 @@
 package com.vorontsov.bookstore;
 
-import com.vorontsov.bookstore.controller.FrontController;
 import com.zaxxer.hikari.HikariDataSource;
-import org.eclipse.tags.shaded.org.apache.xalan.lib.sql.ConnectionPool;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,12 +38,12 @@ public class AppConfig {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource){
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         HikariDataSource hikari = new HikariDataSource();
         hikari.setJdbcUrl(url);
         hikari.setUsername(user);

@@ -1,13 +1,10 @@
 package com.vorontsov.bookstore.service.impl;
 
 import com.vorontsov.bookstore.data.dao.UserDAO;
-import com.vorontsov.bookstore.data.dao.impl.UserDAOImpl;
-import com.vorontsov.bookstore.data.connection.DataSource;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.ServiceUser;
 import com.vorontsov.bookstore.service.dto.UserDto;
 import com.vorontsov.bookstore.service.mapper.Mapper;
-import com.vorontsov.bookstore.service.mapper.MapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,7 +17,6 @@ import java.util.List;
 public class ServiceUserImpl implements ServiceUser {
     private final UserDAO userDAO;
     private final Mapper mapperImpl;
-
 
 
     @Override
@@ -40,7 +36,7 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public UserDto getByEmail(String email) {
-        log.debug("Get by Email" + email );
+        log.debug("Get by Email" + email);
         User user = userDAO.findByEmail(email);
         if (user == null) {
             log.error("No user with email:" + email);
@@ -59,8 +55,8 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public void delete(String email) {
         log.debug("Delete" + email);
-       boolean success = userDAO.deleteByEmail(email);
-        if(!success){
+        boolean success = userDAO.deleteByEmail(email);
+        if (!success) {
             log.error("Couldn't delete user (email=" + email + ")");
             throw new RuntimeException("Couldn't delete user (email=" + email + ")");
         }
@@ -74,10 +70,10 @@ public class ServiceUserImpl implements ServiceUser {
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 return user;
-            }else{
+            } else {
                 log.debug("Incorrect password" + password);
             }
-        }else{
+        } else {
             log.debug("No user with email:" + email);
         }
         return null;

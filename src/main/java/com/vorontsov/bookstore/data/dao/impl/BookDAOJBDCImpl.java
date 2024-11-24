@@ -107,7 +107,7 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public long countAll() {
-       return template.queryForObject(GET_COUNT_ALL_SQL, Integer.class);
+        return template.queryForObject(GET_COUNT_ALL_SQL, Integer.class);
     }
 
     private Book mapRow(ResultSet rs, int num) throws SQLException {
