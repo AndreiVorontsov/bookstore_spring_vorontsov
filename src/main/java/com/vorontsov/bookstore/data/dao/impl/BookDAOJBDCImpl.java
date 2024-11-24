@@ -5,9 +5,10 @@ import com.vorontsov.bookstore.data.dao.BookDAO;
 import com.vorontsov.bookstore.data.entity.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -36,6 +37,7 @@ public class BookDAOJBDCImpl implements BookDAO {
     private static final String UPDATE_SQL = "update books set name = ?, author = ?, isbn = ?, cover = ?,price = ?,Year_Publication = ? where id = ?";
     private static final String UPDATE_NP_SQL = "update books set name = :name, author = :author, isbn = :isbn, cover = :cover,price = :price,Year_Publication = :Year_Publication where id = :id";
     private static final String SOFT_DELETE_SQL = "update books set delete = ? where id = ?";
+    private static final String SOFT_DELETE_NP_SQL = "update books set delete = :delete where id = :id";
     private static final String GET_COUNT_ALL_SQL = "select count(*) from books";
     //private static final String GET_INFO_COLUMNS_SQL = "select collation_name from information_schema.columns where table_name = 'books' and column_name = ?";
     private final DataSource dataSource;
@@ -45,31 +47,20 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public Book create(Book book) {
-        try (Connection connection = dataSource.getConnection()) {
-           PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        template.update((connection) -> {
+            PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, book.getName());
             statement.setString(2, book.getAuthor());
             statement.setString(3, book.getIsbn());
             statement.setString(4, String.valueOf(book.getCover()));
             statement.setBigDecimal(5, book.getPrice());
             statement.setInt(6, book.getYearPublication());
+            return statement;
+        },keyHolder);
+        Long id = keyHolder.getKeyAs(Long.class);
+        return getById(id);
 
-            log.debug("create" + book);
-            statement.executeUpdate();
-
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-
-            if (generatedKeys.next()){
-                long id = generatedKeys.getLong("id");
-                return getById(id);
-            }
-
-        } catch (SQLException e) {
-            log.error("create" + book);
-            throw new RuntimeException(e);
-        }
-        log.error("create" + book);
-        throw new RuntimeException("book :" + book);
     }
 
     @Override
