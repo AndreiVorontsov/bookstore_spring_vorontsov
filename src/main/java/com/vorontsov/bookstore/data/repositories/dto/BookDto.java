@@ -1,20 +1,21 @@
-package com.vorontsov.bookstore.data.entity;
+package com.vorontsov.bookstore.data.repositories.dto;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
-
 @Data
-public class Book {
+public class BookDto {
+
     private Long id;
     private String name;
     private String author;
     private String isbn;
-    private Cover cover;
+    private com.vorontsov.bookstore.service.dto.BookDto.Cover cover;
     private BigDecimal price;
-    private Integer yearPublication;
+    private int yearPublication;
     private boolean delete;
+
 
     public enum Cover {
         SOFT,

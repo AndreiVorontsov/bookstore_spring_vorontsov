@@ -1,7 +1,6 @@
 package com.vorontsov.bookstore.service;
 
 import com.vorontsov.bookstore.data.entity.User;
-import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface ServiceUser {
 
     UserDto getByEmail(String email);
 
-    UserDto update(UserDto userDto );
+    UserDto update(UserDto userDto);
 
     void delete(String email);
 

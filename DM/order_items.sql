@@ -1,0 +1,8 @@
+
+CREATE TABLE order_items (
+id BIGSERIAL PRIMARY KEY,
+book_id BIGINT NOT NULL REFERENCES books,
+quantity INT,
+price NUMERIC,
+order_id BIGINT NOT NULL REFERENCES orders);
+

@@ -1,9 +1,6 @@
 package com.vorontsov.bookstore.service.dto;
 
-import com.vorontsov.bookstore.data.entity.User;
 import lombok.Data;
-
-import java.util.Objects;
 
 @Data
 public class UserDto {

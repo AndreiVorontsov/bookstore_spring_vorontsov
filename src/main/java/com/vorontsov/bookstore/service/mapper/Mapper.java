@@ -4,7 +4,6 @@ import com.vorontsov.bookstore.data.entity.Book;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
-import org.springframework.stereotype.Component;
 
 
 public interface Mapper {

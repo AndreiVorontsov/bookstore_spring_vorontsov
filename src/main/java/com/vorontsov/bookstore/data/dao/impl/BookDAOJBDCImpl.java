@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,7 +50,7 @@ public class BookDAOJBDCImpl implements BookDAO {
             statement.setBigDecimal(5, book.getPrice());
             statement.setInt(6, book.getYearPublication());
             return statement;
-        },keyHolder);
+        }, keyHolder);
         Long id = keyHolder.getKeyAs(Long.class);
         return getById(id);
 
@@ -57,12 +58,12 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public List<Book> getAll() {
-        return template.query(GET_ALL_BOOK_SQL,this::mapRow);
+        return template.query(GET_ALL_BOOK_SQL, this::mapRow);
     }
 
     @Override
     public Book getById(long id) {
-       return template.queryForObject(GET_BY_ID_SQL,this::mapRow,id);
+        return template.queryForObject(GET_BY_ID_SQL, this::mapRow, id);
     }
 
     @Override
@@ -97,12 +98,12 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public Book findByIsbn(String isbn) {
-        return template.queryForObject(GET_BY_ISBN_SQL,this::mapRow,isbn);
+        return template.queryForObject(GET_BY_ISBN_SQL, this::mapRow, isbn);
     }
 
     @Override
     public List<Book> findByAuthor(String author) {
-        return template.query(GET_BY_AUTHOR_SQL,this::mapRow,author);
+        return template.query(GET_BY_AUTHOR_SQL, this::mapRow, author);
     }
 
     @Override
