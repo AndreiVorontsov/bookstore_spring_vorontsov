@@ -1,6 +1,5 @@
 package com.vorontsov.bookstore.service.impl;
 
-import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.data.repositories.UserRepositories;
 import com.vorontsov.bookstore.service.ServiceUser;

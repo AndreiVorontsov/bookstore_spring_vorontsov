@@ -1,7 +1,6 @@
 package com.vorontsov.bookstore.data.dao;
 
 import com.vorontsov.bookstore.data.dto.UserDto;
-import com.vorontsov.bookstore.data.entity.User;
 
 import java.util.List;
 

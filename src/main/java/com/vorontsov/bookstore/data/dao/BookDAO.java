@@ -1,26 +1,26 @@
 package com.vorontsov.bookstore.data.dao;
 
-import com.vorontsov.bookstore.data.entity.Book;
+import com.vorontsov.bookstore.data.dto.BookDto;
 
 import java.util.List;
 
 
 public interface BookDAO {
-    Book create(Book book);
+    BookDto create(BookDto bookDto);
 
-    List<Book> getAll();
+    List<BookDto> getAll();
 
-    Book getById(long id);
+    BookDto getById(long id);
 
-    Book update(Book book);
+    BookDto update(BookDto bookDto);
 
     boolean deleteById(long id);
 
     boolean softDeleteById(long id, boolean bool);
 
-    Book findByIsbn(String isbn);
+    BookDto findByIsbn(String isbn);
 
-    List<Book> findByAuthor(String author);
+    List<BookDto> findByAuthor(String author);
 
     long countAll();
 

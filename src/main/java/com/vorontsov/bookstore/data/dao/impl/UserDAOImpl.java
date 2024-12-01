@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -60,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(5, userDto.getPassword());
             statement.setString(6, userDto.getRole().toString());
             return statement;
-        },keyHolder);
+        }, keyHolder);
         Long id = keyHolder.getKeyAs(Long.class);
         return findById(id);
     }
