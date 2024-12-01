@@ -10,7 +10,7 @@ public interface OrderDAO {
 
     List<OrderDto> getAll();
 
-    OrderDto findByStatus(String status);
+    List<OrderDto> findByStatus(String status);
 
     OrderDto findById(Long id);
 

@@ -23,7 +23,7 @@ import java.util.Map;
 @Log4j2
 public class UserDAOImpl implements UserDAO {
     private static final String INSERT_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (?,?,?,?,?,(SELECT id FROM roles WHERE value = ?))";
-    private static final String INSERT_NP_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (:surName,:name,:lastName,:email,:password,:role,(SELECT id FROM roles WHERE value = :value))";
+    private static final String INSERT_NP_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (:surName,:name,:lastName,:email,:password,role = (SELECT id FROM roles WHERE value = :value))";
     private static final String GET_ALL_USER_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id";
     private static final String GET_BY_EMAIL_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id WHERE u.email = ?";
     private static final String GET_BY_ID_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id WHERE u.id = ?";
@@ -105,13 +105,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteByEmail(String email) {
+
         return template.update(DEL_BY_EMAIL_SQL, email) == 1;
     }
 
     @Override
     public long countAll() {
-        return
-                template.queryForObject(GET_COUNT_ALL_SQL, Integer.class);
+        return template.queryForObject(GET_COUNT_ALL_SQL, Integer.class);
     }
 
     private UserDto mapRow(ResultSet rs, int num) throws SQLException {

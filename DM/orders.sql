@@ -16,3 +16,6 @@ user_id BIGINT NOT NULL REFERENCES users,
 status BIGINT NOT NULL REFERENCES statuses,
 price DECIMAL);
 
+
+INSERT INTO orders (date,user_id,status,price) VALUES ('2024-12-01T18:46:05.967682',5,(SELECT id FROM statuses WHERE value = 'PANDING'),44.67)
+

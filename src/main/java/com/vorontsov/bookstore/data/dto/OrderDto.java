@@ -3,13 +3,14 @@ package com.vorontsov.bookstore.data.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
 public class OrderDto {
     private Long id;
-    private LocalDateTime timeStamp;
-    private Long userId;
+    private Timestamp date;
+    private Long user_id;
     private Status status;
     private BigDecimal price;
 

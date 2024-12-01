@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class Order {
     private Long id;
-    private LocalDateTime timeStamp;
+    private LocalDateTime date;
     private User user;
     private Status status;
     private BigDecimal price;

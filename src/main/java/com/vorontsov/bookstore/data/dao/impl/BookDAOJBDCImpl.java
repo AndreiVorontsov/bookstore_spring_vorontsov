@@ -84,7 +84,6 @@ public class BookDAOJBDCImpl implements BookDAO {
 
     @Override
     public boolean deleteById(long id) {
-
         return template.update(DEL_BY_ID_SQL, id) == 1;
     }
 
