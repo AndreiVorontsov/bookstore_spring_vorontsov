@@ -2,6 +2,7 @@ package com.vorontsov.bookstore.service.impl;
 
 import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.entity.User;
+import com.vorontsov.bookstore.data.repositories.UserRepositories;
 import com.vorontsov.bookstore.service.ServiceUser;
 import com.vorontsov.bookstore.service.dto.UserDto;
 import com.vorontsov.bookstore.service.mapper.Mapper;
@@ -15,20 +16,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ServiceUserImpl implements ServiceUser {
-    private final UserDAO userDAO;
+    private final UserRepositories userRepositoriesImpl;
     private final Mapper mapperImpl;
 
 
     @Override
     public UserDto create(UserDto userDto) {
         log.debug("Create" + userDto);
-        return mapperImpl.mapToUserDto(userDAO.create(mapperImpl.mapToUser(userDto)));
+        User user = mapperImpl.mapToUser(userDto);
+        user = userRepositoriesImpl.create(user);
+        return mapperImpl.mapToUserDto(user);
     }
 
     @Override
     public List<UserDto> getAll() {
         log.debug("Get All");
-        return userDAO.getAll()
+        return userRepositoriesImpl.getAll()
                 .stream()
                 .map(mapperImpl::mapToUserDto)
                 .toList();
@@ -37,7 +40,7 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public UserDto getByEmail(String email) {
         log.debug("Get by Email" + email);
-        User user = userDAO.findByEmail(email);
+        User user = userRepositoriesImpl.findByEmail(email);
         if (user == null) {
             log.error("No user with email:" + email);
 //            throw new RuntimeException("No user with email:" + email);
@@ -49,13 +52,15 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public UserDto update(UserDto userDto) {
         log.debug("Update" + userDto);
-        return mapperImpl.mapToUserDto(userDAO.update(mapperImpl.mapToUser(userDto)));
+        User user = mapperImpl.mapToUser(userDto);
+        user = userRepositoriesImpl.update(user);
+        return mapperImpl.mapToUserDto(user);
     }
 
     @Override
     public void delete(String email) {
         log.debug("Delete" + email);
-        boolean success = userDAO.deleteByEmail(email);
+        boolean success = userRepositoriesImpl.deleteByEmail(email);
         if (!success) {
             log.error("Couldn't delete user (email=" + email + ")");
             throw new RuntimeException("Couldn't delete user (email=" + email + ")");
@@ -66,7 +71,7 @@ public class ServiceUserImpl implements ServiceUser {
     public User login(String email, String password) {
         log.debug("Get User with email = " + email + "password = " + password);
         User user = new User();
-        user = userDAO.findByEmail(email);
+        user = userRepositoriesImpl.findByEmail(email);
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 return user;

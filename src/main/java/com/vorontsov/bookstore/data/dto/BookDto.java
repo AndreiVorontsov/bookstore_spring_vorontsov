@@ -1,4 +1,4 @@
-package com.vorontsov.bookstore.data.repositories.dto;
+package com.vorontsov.bookstore.data.dto;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ public class BookDto {
     private String name;
     private String author;
     private String isbn;
-    private com.vorontsov.bookstore.service.dto.BookDto.Cover cover;
+    private Cover cover;
     private BigDecimal price;
     private int yearPublication;
     private boolean delete;

@@ -1,6 +1,7 @@
 package com.vorontsov.bookstore.service.impl;
 
 import com.vorontsov.bookstore.data.dao.BookDAO;
+import com.vorontsov.bookstore.data.dao.impl.BookDAOJBDCImpl;
 import com.vorontsov.bookstore.data.entity.Book;
 import com.vorontsov.bookstore.service.ServiceBook;
 import com.vorontsov.bookstore.service.dto.BookDto;
@@ -60,7 +61,9 @@ public class ServiceBookImpl implements ServiceBook {
     public BookDto create(BookDto bookDto) {
         log.debug("Create: " + bookDto);
         if (getByIsbn(bookDto.getIsbn()) == null) {
-            return mapperImpl.mapToBookDto(bookDAO.create(mapperImpl.mapToBook(bookDto)));
+            Book book = mapperImpl.mapToBook(bookDto);
+            book = bookDAO.create(book);
+            return mapperImpl.mapToBookDto(book);
         } else {
             return null;
         }
@@ -69,8 +72,11 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto update(BookDto bookDto) {
         log.debug("Update: " + bookDto);
-        if (getByIsbn(bookDto.getIsbn()).getId() == bookDto.getId()) {
-            return mapperImpl.mapToBookDto(bookDAO.update(mapperImpl.mapToBook(bookDto)));
+
+        if (getByIsbn(bookDto.getIsbn()).getId().equals(bookDto.getId())) {
+            Book book = mapperImpl.mapToBook(bookDto);
+            book = bookDAO.update(book);
+            return mapperImpl.mapToBookDto(book);
         } else {
             return null;
         }

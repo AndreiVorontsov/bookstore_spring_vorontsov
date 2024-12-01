@@ -1,24 +1,25 @@
 package com.vorontsov.bookstore.data.dao;
 
+import com.vorontsov.bookstore.data.dto.UserDto;
 import com.vorontsov.bookstore.data.entity.User;
 
 import java.util.List;
 
 public interface UserDAO {
 
-    User create(User user);
+    UserDto create(UserDto userDto);
 
-    List<User> getAll();
+    List<UserDto> getAll();
 
-    User findByEmail(String email);
+    UserDto findByEmail(String email);
 
-    User findById(Long id);
+    UserDto findById(Long id);
 
-    List<User> findByLastName(String lastName);
+    List<UserDto> findByLastName(String lastName);
 
     long countAll();
 
-    User update(User user);
+    UserDto update(UserDto userDto);
 
     boolean deleteByEmail(String email);
 }
