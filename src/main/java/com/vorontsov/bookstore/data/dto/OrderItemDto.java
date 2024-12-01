@@ -9,6 +9,6 @@ public class OrderItemDto {
     private Long order_id;
     private Long book_id;
     private Integer quantity;
-    private BigDecimal bookPrice;
+    private BigDecimal price;
 
 }

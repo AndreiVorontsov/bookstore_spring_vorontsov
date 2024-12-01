@@ -19,3 +19,4 @@ price DECIMAL);
 
 INSERT INTO orders (date,user_id,status,price) VALUES ('2024-12-01T18:46:05.967682',5,(SELECT id FROM statuses WHERE value = 'PANDING'),44.67)
 
+UPDATE orders SET date = '2024-12-01T18:48:05.967682', user_id = 5, status = (SELECT id FROM statuses WHERE value = 'DELIVERD'), price = 60 where id = 1

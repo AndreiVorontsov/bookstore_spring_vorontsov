@@ -22,12 +22,12 @@ import java.util.Map;
 @Log4j2
 public class OrderDAOImpl implements OrderDAO {
     private static final String INSERT_NP_SQL = "INSERT INTO orders (date,user_id,status,price) VALUES (:date,:user_id,status = (SELECT id FROM statuses WHERE value = :value),:price)";
-    private static final String GET_ORDERS_ALL_SQL = "SELECT count(*) FROM orders";
+    private static final String GET_ORDERS_ALL_SQL = "SELECT o.id,o.date,o.user_id,s.value,o.price FROM orders o JOIN statuses s ON s.id = o.status";
     private static final String GET_BY_ID_SQL = "SELECT o.id,o.date,o.user_id,s.value,o.price FROM orders o JOIN statuses s ON s.id = o.status WHERE o.id = ?";
     private static final String GET_BY_USERID_SQL = "SELECT o.id,o.date,o.user_id,s.value,o.price FROM orders o JOIN statuses s ON s.id = o.status WHERE o.user_id = ?";
     private static final String GET_BY_STATUS_SQL = "SELECT o.id,o.date,o.user_id,s.value,o.price FROM orders o JOIN statuses s ON s.id = o.status WHERE s.value = ?";
     private static final String GET_COUNT_ALL_SQL = "SELECT count(*) FROM orders";
-    private static final String UPDATE_NP_SQL = "UPDATE orders SET date = date, user_id = :user_id, status = (SELECT id FROM statuses WHERE value = :value), price = :price where id = :id";
+    private static final String UPDATE_NP_SQL = "UPDATE orders SET date = :date, user_id = :user_id, status = (SELECT id FROM statuses WHERE value = :value), price = :price where id = :id";
     private static final String DEL_BY_ID_SQL = "DELETE FROM orders where id = ?";
 
     private final JdbcTemplate template;
