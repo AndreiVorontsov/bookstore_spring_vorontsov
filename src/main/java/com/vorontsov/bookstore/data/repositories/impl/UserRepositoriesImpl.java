@@ -3,7 +3,7 @@ package com.vorontsov.bookstore.data.repositories.impl;
 import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.dto.UserDto;
 import com.vorontsov.bookstore.data.entity.User;
-import com.vorontsov.bookstore.data.mapper.Mapper;
+import com.vorontsov.bookstore.data.mapper.DataMapper;
 import com.vorontsov.bookstore.data.repositories.UserRepositories;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,21 +16,21 @@ import java.util.List;
 @Log4j2
 public class UserRepositoriesImpl implements UserRepositories {
     private final UserDAO userDAO;
-    private final Mapper mapperImpl;
+    private final DataMapper dataMapperImpl;
 
 
     @Override
     public User create(User user) {
-        UserDto userDto = mapperImpl.mapToUserDto(user);
+        UserDto userDto = dataMapperImpl.mapToUserDto(user);
         userDto = userDAO.create(userDto);
-        return mapperImpl.mapToUser(userDto);
+        return dataMapperImpl.mapToUser(userDto);
     }
 
     @Override
     public List<User> getAll() {
         return userDAO.getAll()
                 .stream()
-                .map(mapperImpl::mapToUser)
+                .map(dataMapperImpl::mapToUser)
                 .toList();
     }
 
@@ -42,20 +42,20 @@ public class UserRepositoriesImpl implements UserRepositories {
 //            throw new RuntimeException("No user with email:" + email);
             return null;
         }
-        return mapperImpl.mapToUser(userDto);
+        return dataMapperImpl.mapToUser(userDto);
     }
 
     @Override
     public User findById(Long id) {
         UserDto userDto = userDAO.findById(id);
-        return mapperImpl.mapToUser(userDto);
+        return dataMapperImpl.mapToUser(userDto);
     }
 
     @Override
     public List<User> findByLastName(String lastName) {
         return userDAO.findByLastName(lastName)
                 .stream()
-                .map(mapperImpl::mapToUser)
+                .map(dataMapperImpl::mapToUser)
                 .toList();
     }
 
@@ -67,9 +67,9 @@ public class UserRepositoriesImpl implements UserRepositories {
 
     @Override
     public User update(User user) {
-        UserDto userDto = mapperImpl.mapToUserDto(user);
+        UserDto userDto = dataMapperImpl.mapToUserDto(user);
         userDto = userDAO.update(userDto);
-        return mapperImpl.mapToUser(userDto);
+        return dataMapperImpl.mapToUser(userDto);
     }
 
     @Override

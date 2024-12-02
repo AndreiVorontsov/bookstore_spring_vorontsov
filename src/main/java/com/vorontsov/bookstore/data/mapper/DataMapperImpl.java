@@ -1,13 +1,17 @@
 package com.vorontsov.bookstore.data.mapper;
 
 import com.vorontsov.bookstore.data.dto.BookDto;
+import com.vorontsov.bookstore.data.dto.OrderDto;
+import com.vorontsov.bookstore.data.dto.OrderItemDto;
 import com.vorontsov.bookstore.data.dto.UserDto;
 import com.vorontsov.bookstore.data.entity.Book;
+import com.vorontsov.bookstore.data.entity.Order;
+import com.vorontsov.bookstore.data.entity.OrderItem;
 import com.vorontsov.bookstore.data.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MapperDataImpl implements Mapper {
+public class DataMapperImpl implements DataMapper {
 
     @Override
     public BookDto mapToBookDto(Book book) {
@@ -61,5 +65,45 @@ public class MapperDataImpl implements Mapper {
         userDto.setPassword(user.getPassword());
         userDto.setRole(UserDto.Role.valueOf(user.getRole().toString()));
         return userDto;
+    }
+
+    @Override
+    public Order mapToOrder(OrderDto orderDto) {
+        Order order =new Order();
+        order.setId(orderDto.getId());
+        order.setDate(orderDto.getDate());
+        order.setPrice(orderDto.getPrice());
+        order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
+        return order;
+    }
+
+    @Override
+    public OrderDto mapToOrderDto(Order order) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setDate(order.getDate());
+        orderDto.setUser_id(order.getUser().getId());
+        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setPrice(order.getPrice());
+        return orderDto;
+    }
+
+    @Override
+    public OrderItem mapToOrderItem(OrderItemDto orderItemDto) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(orderItemDto.getId());
+        orderItem.setQuantity(orderItemDto.getQuantity());
+        orderItem.setBookPrice(orderItemDto.getPrice());
+        return orderItem;
+    }
+
+    @Override
+    public OrderItemDto mapToOrderItemDto(OrderItem orderItem) {
+        OrderItemDto orderItemDto = new OrderItemDto();
+        orderItemDto.setId(orderItem.getId());
+        orderItemDto.setBook_id(orderItem.getBook().getId());
+        orderItemDto.setQuantity(orderItem.getQuantity());
+        orderItemDto.setPrice(orderItem.getBookPrice());
+        return orderItemDto;
     }
 }
