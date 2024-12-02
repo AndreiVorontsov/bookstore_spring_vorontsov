@@ -1,8 +1,10 @@
 package com.vorontsov.bookstore.service.mapper;
 
 import com.vorontsov.bookstore.data.entity.Book;
+import com.vorontsov.bookstore.data.entity.Order;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.dto.BookDto;
+import com.vorontsov.bookstore.service.dto.OrderDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -63,4 +65,26 @@ public class MapperImpl implements Mapper {
         return userDto;
     }
 
+    @Override
+    public Order mapToOrder(OrderDto orderDto) {
+        Order order = new Order();
+        order.setId(orderDto.getId());
+        order.setDate(orderDto.getDate());
+        order.setUser(orderDto.getUser());
+        order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
+        order.setPrice(orderDto.getPrice());
+        order.setOrderItems(orderDto.getOrderItems());
+        return order;
+    }
+
+    @Override
+    public OrderDto mapToOrderDto(Order order) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setDate(order.getDate());
+        orderDto.setUser(order.getUser());
+        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setOrderItems(order.getOrderItems());
+        return null;
+    }
 }

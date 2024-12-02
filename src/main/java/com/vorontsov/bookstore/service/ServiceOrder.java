@@ -1,5 +1,17 @@
 package com.vorontsov.bookstore.service;
 
-public interface ServiceOrder {
+import com.vorontsov.bookstore.service.dto.OrderDto;
 
+import java.util.List;
+
+public interface ServiceOrder {
+    OrderDto create(OrderDto orderDto);
+
+    List<OrderDto> getAll();
+
+    OrderDto findById(Long id);
+
+    long countAll();
+
+    OrderDto update(OrderDto orderDto);
 }

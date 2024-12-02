@@ -1,8 +1,10 @@
 package com.vorontsov.bookstore.service.mapper;
 
 import com.vorontsov.bookstore.data.entity.Book;
+import com.vorontsov.bookstore.data.entity.Order;
 import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.dto.BookDto;
+import com.vorontsov.bookstore.service.dto.OrderDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
 
 
@@ -14,5 +16,9 @@ public interface Mapper {
     User mapToUser(UserDto userDto);
 
     UserDto mapToUserDto(User user);
+
+    Order mapToOrder(OrderDto orderDto);
+
+    OrderDto mapToOrderDto(Order order);
 
 }
