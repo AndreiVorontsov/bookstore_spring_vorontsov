@@ -84,7 +84,8 @@ public class MapperImpl implements Mapper {
         orderDto.setDate(order.getDate());
         orderDto.setUser(order.getUser());
         orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setPrice(order.getPrice());
         orderDto.setOrderItems(order.getOrderItems());
-        return null;
+        return orderDto;
     }
 }

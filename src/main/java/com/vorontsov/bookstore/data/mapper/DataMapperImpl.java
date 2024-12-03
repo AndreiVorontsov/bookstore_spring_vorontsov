@@ -69,7 +69,7 @@ public class DataMapperImpl implements DataMapper {
 
     @Override
     public Order mapToOrder(OrderDto orderDto) {
-        Order order =new Order();
+        Order order = new Order();
         order.setId(orderDto.getId());
         order.setDate(orderDto.getDate());
         order.setPrice(orderDto.getPrice());

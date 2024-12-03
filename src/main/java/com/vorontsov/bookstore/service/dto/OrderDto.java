@@ -1,6 +1,5 @@
 package com.vorontsov.bookstore.service.dto;
 
-import com.vorontsov.bookstore.data.entity.Order;
 import com.vorontsov.bookstore.data.entity.OrderItem;
 import com.vorontsov.bookstore.data.entity.User;
 import lombok.Data;

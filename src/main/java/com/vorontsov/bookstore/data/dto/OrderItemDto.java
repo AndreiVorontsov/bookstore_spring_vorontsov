@@ -1,6 +1,7 @@
 package com.vorontsov.bookstore.data.dto;
 
 import lombok.Data;
+
 import java.math.BigDecimal;
 
 @Data

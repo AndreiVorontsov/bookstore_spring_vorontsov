@@ -11,9 +11,6 @@
         </style>
     </head>
     <body>
-        <div class="container-buttons">
-            <button> <a href="/controller?command=books" class="button1">Books</a></button>
-            <button> <a href="/controller?command=users" class="button1">Users</a></button>
-        </div>
+        <jsp:include page="/jsp/navbar.jsp"/>
     </body>
 </html>

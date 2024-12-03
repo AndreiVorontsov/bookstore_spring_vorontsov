@@ -48,6 +48,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public List<OrderDto> getAll() {
+
         return template.query(GET_ORDERS_ALL_SQL, this::mapRow);
     }
 
@@ -93,6 +94,7 @@ public class OrderDAOImpl implements OrderDAO {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(rs.getLong("id"));
         orderDto.setDate(rs.getTimestamp("date"));
+        orderDto.setUser_id(rs.getLong("user_id"));
         orderDto.setStatus(OrderDto.Status.valueOf(rs.getString("value").toString()));
         orderDto.setPrice(rs.getBigDecimal("price"));
         log.debug(orderDto);

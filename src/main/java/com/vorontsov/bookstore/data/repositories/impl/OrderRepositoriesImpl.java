@@ -84,7 +84,7 @@ public class OrderRepositoriesImpl implements OrderRepositories {
     }
 
 
-    private Order combineOrder(OrderDto orderDto){
+    private Order combineOrder(OrderDto orderDto) {
         Order order = dataMapper.mapToOrder(orderDto);
 
         Long userId = orderDto.getUser_id();
