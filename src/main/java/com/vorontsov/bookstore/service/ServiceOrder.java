@@ -11,6 +11,8 @@ public interface ServiceOrder {
 
     OrderDto findById(Long id);
 
+    List<OrderDto> findByUserId(Long user_id);
+
     long countAll();
 
     OrderDto update(OrderDto orderDto);

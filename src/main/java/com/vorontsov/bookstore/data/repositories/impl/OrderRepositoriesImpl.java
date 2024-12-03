@@ -83,6 +83,13 @@ public class OrderRepositoriesImpl implements OrderRepositories {
         return findById(order.getId());
     }
 
+    @Override
+    public List<Order> findByUserId(Long user_id) {
+        return orderDAO.findByUserId(user_id)
+                .stream()
+                .map(this::combineOrder)
+                .collect(Collectors.toList());
+    }
 
     private Order combineOrder(OrderDto orderDto) {
         Order order = dataMapper.mapToOrder(orderDto);

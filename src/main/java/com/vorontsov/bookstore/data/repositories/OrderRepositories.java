@@ -11,6 +11,8 @@ public interface OrderRepositories {
 
     Order findById(Long id);
 
+    List<Order> findByUserId(Long user_id);
+
     long countAll();
 
     Order update(Order order);

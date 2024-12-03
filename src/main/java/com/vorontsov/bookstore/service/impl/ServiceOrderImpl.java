@@ -55,4 +55,12 @@ public class ServiceOrderImpl implements ServiceOrder {
         orderDto = mapperImpl.mapToOrderDto(order);
         return orderDto;
     }
+
+    @Override
+    public List<OrderDto> findByUserId(Long user_id) {
+        return orderRepositories.findByUserId(user_id)
+                .stream()
+                .map(mapperImpl::mapToOrderDto)
+                .collect(Collectors.toList());
+    }
 }
