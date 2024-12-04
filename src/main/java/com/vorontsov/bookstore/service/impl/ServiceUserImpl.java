@@ -1,8 +1,9 @@
 package com.vorontsov.bookstore.service.impl;
 
-import com.vorontsov.bookstore.data.dao.UserDAO;
 import com.vorontsov.bookstore.data.entity.User;
+import com.vorontsov.bookstore.data.repositories.UserRepositories;
 import com.vorontsov.bookstore.service.ServiceUser;
+import com.vorontsov.bookstore.service.dto.UserCreateDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
 import com.vorontsov.bookstore.service.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +16,34 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ServiceUserImpl implements ServiceUser {
-    private final UserDAO userDAO;
+    private final UserRepositories userRepositoriesImpl;
     private final Mapper mapperImpl;
 
 
     @Override
-    public UserDto create(UserDto userDto) {
-        log.debug("Create" + userDto);
-        return mapperImpl.mapToUserDto(userDAO.create(mapperImpl.mapToUser(userDto)));
+    public UserDto create(UserCreateDto userCreateDto) {
+        UserDto userDto = new UserDto();
+//        userDto = getByEmail(userCreateDto.getEmail());
+//        if (userDto != null) {
+//            throw new RuntimeException("exists user with email:" + userCreateDto.getEmail());
+//        }
+//        if (userDto.getEmail().equals(userCreateDto.getEmail())){
+//            throw new RuntimeException("exists user with email:" + userCreateDto.getEmail());
+//        }
+        userDto.setEmail(userCreateDto.getEmail());
+        userDto.setPassword(userCreateDto.getPassword());
+        userDto.setRole(UserDto.Role.USER);
+
+        log.debug("Create {}", userDto);
+        User user = mapperImpl.mapToUser(userDto);
+        user = userRepositoriesImpl.create(user);
+        return mapperImpl.mapToUserDto(user);
     }
 
     @Override
     public List<UserDto> getAll() {
         log.debug("Get All");
-        return userDAO.getAll()
+        return userRepositoriesImpl.getAll()
                 .stream()
                 .map(mapperImpl::mapToUserDto)
                 .toList();
@@ -36,46 +51,35 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public UserDto getByEmail(String email) {
-        log.debug("Get by Email" + email);
-        User user = userDAO.findByEmail(email);
-        if (user == null) {
-            log.error("No user with email:" + email);
-//            throw new RuntimeException("No user with email:" + email);
-            return null;
-        }
+        User user = userRepositoriesImpl.findByEmail(email);
         return mapperImpl.mapToUserDto(user);
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-        log.debug("Update" + userDto);
-        return mapperImpl.mapToUserDto(userDAO.update(mapperImpl.mapToUser(userDto)));
+        log.debug("Update {}", userDto);
+        User user = mapperImpl.mapToUser(userDto);
+        user = userRepositoriesImpl.update(user);
+        return mapperImpl.mapToUserDto(user);
     }
 
     @Override
     public void delete(String email) {
-        log.debug("Delete" + email);
-        boolean success = userDAO.deleteByEmail(email);
+        log.debug("Delete {}", email);
+        boolean success = userRepositoriesImpl.deleteByEmail(email);
         if (!success) {
-            log.error("Couldn't delete user (email=" + email + ")");
             throw new RuntimeException("Couldn't delete user (email=" + email + ")");
         }
     }
 
     @Override
-    public User login(String email, String password) {
-        log.debug("Get User with email = " + email + "password = " + password);
-        User user = new User();
-        user = userDAO.findByEmail(email);
-        if (user != null) {
-            if (user.getPassword().equals(password)) {
-                return user;
-            } else {
-                log.debug("Incorrect password" + password);
-            }
+    public UserDto login(String email, String password) {
+        log.debug("Get User with email = {} password = {}", email, password);
+        User user = userRepositoriesImpl.findByEmail(email);
+        if (user.getPassword().equals(password)) {
+            return mapperImpl.mapToUserDto(user);
         } else {
-            log.debug("No user with email:" + email);
+            throw new RuntimeException("Incorrect password: " + password);
         }
-        return null;
     }
 }

@@ -1,7 +1,7 @@
 package com.vorontsov.bookstore.service.impl;
 
-import com.vorontsov.bookstore.data.dao.BookDAO;
 import com.vorontsov.bookstore.data.entity.Book;
+import com.vorontsov.bookstore.data.repositories.BookRepositories;
 import com.vorontsov.bookstore.service.ServiceBook;
 import com.vorontsov.bookstore.service.dto.BookDto;
 import com.vorontsov.bookstore.service.mapper.Mapper;
@@ -18,14 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ServiceBookImpl implements ServiceBook {
-    private final BookDAO bookDAO;
+    private final BookRepositories bookRepositories;
     private final Mapper mapperImpl;
 
     @Override
     public List<BookDto> getAll() {
         log.debug("getAll");
         List<BookDto> booksDto = new ArrayList<>();
-        bookDAO.getAll().forEach(book -> {
+        bookRepositories.getAll().forEach(book -> {
             BookDto bookDto = mapperImpl.mapToBookDto(book);
             booksDto.add(bookDto);
         });
@@ -35,22 +35,22 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto getById(Long id) {
         log.debug("Get by Id" + id);
-        Book book = bookDAO.getById(id);
+        Book book = bookRepositories.getById(id);
         if (book == null) {
             log.error("No book with id:" + id);
             throw new RuntimeException("No book with id:" + id);
         }
-        return mapperImpl.mapToBookDto(bookDAO.getById(id));
+        return mapperImpl.mapToBookDto(bookRepositories.getById(id));
     }
 
     @Override
     public BookDto getByIsbn(String isbn) {
         log.debug("Get by Isbn" + isbn);
-        Book book = bookDAO.findByIsbn(isbn);
+        Book book = bookRepositories.findByIsbn(isbn);
         if (book == null) {
             return null;
         } else {
-            return mapperImpl.mapToBookDto(bookDAO.findByIsbn(isbn));
+            return mapperImpl.mapToBookDto(bookRepositories.findByIsbn(isbn));
         }
 
     }
@@ -60,7 +60,9 @@ public class ServiceBookImpl implements ServiceBook {
     public BookDto create(BookDto bookDto) {
         log.debug("Create: " + bookDto);
         if (getByIsbn(bookDto.getIsbn()) == null) {
-            return mapperImpl.mapToBookDto(bookDAO.create(mapperImpl.mapToBook(bookDto)));
+            Book book = mapperImpl.mapToBook(bookDto);
+            book = bookRepositories.create(book);
+            return mapperImpl.mapToBookDto(book);
         } else {
             return null;
         }
@@ -69,8 +71,11 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto update(BookDto bookDto) {
         log.debug("Update: " + bookDto);
-        if (getByIsbn(bookDto.getIsbn()).getId() == bookDto.getId()) {
-            return mapperImpl.mapToBookDto(bookDAO.update(mapperImpl.mapToBook(bookDto)));
+
+        if (getByIsbn(bookDto.getIsbn()).getId().equals(bookDto.getId())) {
+            Book book = mapperImpl.mapToBook(bookDto);
+            book = bookRepositories.update(book);
+            return mapperImpl.mapToBookDto(book);
         } else {
             return null;
         }
@@ -80,7 +85,7 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public void delete(long id) {
         log.debug("Delete" + id);
-        boolean success = bookDAO.deleteById(id);
+        boolean success = bookRepositories.deleteById(id);
         if (!success) {
             log.error("Couldn't delete book (id=" + id + ")");
             throw new RuntimeException("Couldn't delete book (id=" + id + ")");
@@ -89,7 +94,7 @@ public class ServiceBookImpl implements ServiceBook {
 
     @Override
     public void softDelete(long id, boolean bool) {
-        boolean success = bookDAO.softDeleteById(id, bool);
+        boolean success = bookRepositories.softDeleteById(id, bool);
         if (!success) {
             log.error("Couldn't softDelete book (id=" + id + ")");
             throw new RuntimeException("Couldn't softDelete book (id=" + id + ")");
@@ -100,7 +105,7 @@ public class ServiceBookImpl implements ServiceBook {
     public BigDecimal getTotalCostByAuthor(String author) {
         log.debug("getTotalCostByAuthor" + author);
         BigDecimal summ = new BigDecimal("0");
-        for (Book book : bookDAO.findByAuthor(author)) {
+        for (Book book : bookRepositories.findByAuthor(author)) {
             if (book.getPrice() != null) {
                 summ = summ.add(book.getPrice());
             } else {

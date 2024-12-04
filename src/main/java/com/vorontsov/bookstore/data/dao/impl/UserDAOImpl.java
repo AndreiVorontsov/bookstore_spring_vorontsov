@@ -1,17 +1,19 @@
 package com.vorontsov.bookstore.data.dao.impl;
 
 import com.vorontsov.bookstore.data.dao.UserDAO;
-import com.vorontsov.bookstore.data.entity.User;
+import com.vorontsov.bookstore.data.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +23,7 @@ import java.util.Map;
 @Log4j2
 public class UserDAOImpl implements UserDAO {
     private static final String INSERT_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (?,?,?,?,?,(SELECT id FROM roles WHERE value = ?))";
-    private static final String INSERT_NP_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (:surName,:name,:lastName,:email,:password,:role,(SELECT id FROM roles WHERE value = :value))";
+    private static final String INSERT_NP_SQL = "INSERT INTO users (surName,name,lastName,email,password,role) VALUES (:surName,:name,:lastName,:email,:password,role = (SELECT id FROM roles WHERE value = :value))";
     private static final String GET_ALL_USER_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id";
     private static final String GET_BY_EMAIL_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id WHERE u.email = ?";
     private static final String GET_BY_ID_SQL = "SELECT u.id,u.surName,u.name,u.lastName,u.email,u.password,r.value FROM users u JOIN roles r ON u.role = r.id WHERE u.id = ?";
@@ -30,75 +32,84 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_SQL = "UPDATE users SET surName = ?, name = ?, lastName = ?, email = ?,password = ?,role = (SELECT id FROM roles WHERE value = ?) where id = ?";
     private static final String UPDATE_NP_SQL = "UPDATE users SET surName = :surName, name = :name, lastName = :lastName, email = :email,password = :password,role = (SELECT id FROM roles WHERE value = :value) where id = :id";
     private static final String DEL_BY_EMAIL_SQL = "DELETE FROM books where email = ?";
-    //    private final DataSource dataSource;
     private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate namedTemplate;
 
     @Override
-    public User create(User user) {
+    public UserDto create(UserDto userDto) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        Map<String, Object> map = new HashMap<>();
-        map.put("surName", user.getSurName());
-        map.put("name", user.getName());
-        map.put("lastName", user.getLastName());
-        map.put("email", user.getEmail());
-        map.put("password", user.getPassword());
-        map.put("value", user.getRole());
-//        map.put("id",user.getId());
-        namedTemplate.update(INSERT_NP_SQL, (SqlParameterSource) map, keyHolder);
-        Long id = keyHolder.getKeyAs(Long.class);
-        return findById(id);
-//        template.update((connection) -> {
-//            PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
-//            statement.setString(1, user.getSurName());
-//            statement.setString(2, user.getName());
-//            statement.setString(3, user.getLastName());
-//            statement.setString(4, user.getEmail());
-//            statement.setString(5, user.getPassword());
-//            statement.setString(6, user.getRole().toString());
-//            return statement;
-//        },keyHolder);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("surName", userDto.getSurName());
+//        map.put("name", userDto.getName());
+//        map.put("lastName", userDto.getLastName());
+//        map.put("email", userDto.getEmail());
+//        map.put("password", userDto.getPassword());
+//        map.put("value", userDto.getRole());
+////        map.put("id",user.getId());
+//        namedTemplate.update(INSERT_NP_SQL, (SqlParameterSource) map, keyHolder);
+//        List<Map<String, Object>> keyList = keyHolder.getKeyList();
+//        Map<String,Object> mapKey = keyList.get(0);
+//        Long id = (Long) mapKey.get("id");
 //        Long id = keyHolder.getKeyAs(Long.class);
 //        return findById(id);
+        template.update((connection) -> {
+            PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, userDto.getSurName());
+            statement.setString(2, userDto.getName());
+            statement.setString(3, userDto.getLastName());
+            statement.setString(4, userDto.getEmail());
+            statement.setString(5, userDto.getPassword());
+            statement.setString(6, userDto.getRole().toString());
+            return statement;
+        }, keyHolder);
+        List<Map<String, Object>> keyList = keyHolder.getKeyList();
+        Map<String, Object> map = keyList.get(0);
+        Long id = (Long) map.get("id");
+        return findById(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public List<UserDto> getAll() {
+
         return template.query(GET_ALL_USER_SQL, this::mapRow);
     }
 
     @Override
-    public User findById(Long id) {
+    public UserDto findById(Long id) {
+
         return template.queryForObject(GET_BY_ID_SQL, this::mapRow, id);
     }
 
     @Override
-    public User findByEmail(String email) {
+    public UserDto findByEmail(String email) {
+
         return template.queryForObject(GET_BY_EMAIL_SQL, this::mapRow, email);
     }
 
     @Override
-    public List<User> findByLastName(String lastName) {
+    public List<UserDto> findByLastName(String lastName) {
+
         return template.query(GET_BY_LASTNAME_SQL, this::mapRow);
     }
 
     @Override
-    public User update(User user) {
+    public UserDto update(UserDto userDto) {
         Map<String, Object> map = new HashMap<>();
-        map.put("surName", user.getSurName());
-        map.put("name", user.getName());
-        map.put("lastName", user.getLastName());
-        map.put("email", user.getEmail());
-        map.put("password", user.getPassword());
-        map.put("value", user.getRole());
-        map.put("id", user.getId());
+        map.put("surName", userDto.getSurName());
+        map.put("name", userDto.getName());
+        map.put("lastName", userDto.getLastName());
+        map.put("email", userDto.getEmail());
+        map.put("password", userDto.getPassword());
+        map.put("value", userDto.getRole());
+        map.put("id", userDto.getId());
         namedTemplate.update(UPDATE_NP_SQL, map);
 
-        return findById(user.getId());
+        return findById(userDto.getId());
     }
 
     @Override
     public boolean deleteByEmail(String email) {
+
         return template.update(DEL_BY_EMAIL_SQL, email) == 1;
     }
 
@@ -107,16 +118,16 @@ public class UserDAOImpl implements UserDAO {
         return template.queryForObject(GET_COUNT_ALL_SQL, Integer.class);
     }
 
-    private User mapRow(ResultSet rs, int num) throws SQLException {
-        User user = new User();
-        user.setId(rs.getLong("id"));
-        user.setSurName(rs.getString("surname"));
-        user.setName(rs.getString("name"));
-        user.setLastName(rs.getString("lastname"));
-        user.setEmail(rs.getString("email"));
-        user.setPassword(rs.getString("password"));
-        user.setRole(User.Role.valueOf(rs.getString("value").toString()));
-        log.debug(user);
-        return user;
+    private UserDto mapRow(ResultSet rs, int num) throws SQLException {
+        UserDto userDto = new UserDto();
+        userDto.setId(rs.getLong("id"));
+        userDto.setSurName(rs.getString("surname"));
+        userDto.setName(rs.getString("name"));
+        userDto.setLastName(rs.getString("lastname"));
+        userDto.setEmail(rs.getString("email"));
+        userDto.setPassword(rs.getString("password"));
+        userDto.setRole(UserDto.Role.valueOf(rs.getString("value").toString()));
+        log.debug(userDto);
+        return userDto;
     }
 }

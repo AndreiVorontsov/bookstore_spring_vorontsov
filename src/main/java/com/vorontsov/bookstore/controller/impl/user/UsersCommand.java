@@ -1,4 +1,4 @@
-package com.vorontsov.bookstore.controller.impl;
+package com.vorontsov.bookstore.controller.impl.user;
 
 import com.vorontsov.bookstore.controller.Command;
 import com.vorontsov.bookstore.service.ServiceUser;

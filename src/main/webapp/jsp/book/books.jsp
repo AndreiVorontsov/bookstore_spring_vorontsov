@@ -5,10 +5,7 @@
     <link rel="stylesheet" type="text/css" href="css/button/button1.css">
 </head>
 <body>
-    <div class="container-buttons">
-        <button> <a href="/controller?command=home" class="button1">Home</a> </button>
-        <button> <a href="/controller?command=users" class="button1">Users</a> </button>
-    </div>
+    <jsp:include page="../navbar.jsp"/>
     <h1>All Books</h1>
     <h3>${date}</h3>
     <table>

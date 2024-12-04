@@ -1,4 +1,4 @@
-package com.vorontsov.bookstore.controller.impl;
+package com.vorontsov.bookstore.controller.impl.book;
 
 
 import com.vorontsov.bookstore.controller.Command;
@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BooksCommand implements Command {
     private final ServiceBook serviceBook;
-
 
     @Override
     public String process(HttpServletRequest req) {

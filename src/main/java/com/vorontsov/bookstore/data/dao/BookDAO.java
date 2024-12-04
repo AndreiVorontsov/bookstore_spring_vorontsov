@@ -1,25 +1,26 @@
 package com.vorontsov.bookstore.data.dao;
 
-import com.vorontsov.bookstore.data.entity.Book;
-import org.springframework.stereotype.Component;
+import com.vorontsov.bookstore.data.dto.BookDto;
 
 import java.util.List;
 
 
 public interface BookDAO {
-    Book create(Book book);
+    BookDto create(BookDto bookDto);
 
-    List<Book> getAll();
-    Book getById(long id);
+    List<BookDto> getAll();
 
-    Book update(Book book);
+    BookDto getById(long id);
+
+    BookDto update(BookDto bookDto);
 
     boolean deleteById(long id);
+
     boolean softDeleteById(long id, boolean bool);
 
-    Book findByIsbn(String isbn);
+    BookDto findByIsbn(String isbn);
 
-    List<Book> findByAuthor(String author);
+    List<BookDto> findByAuthor(String author);
 
     long countAll();
 
