@@ -32,7 +32,6 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_SQL = "UPDATE users SET surName = ?, name = ?, lastName = ?, email = ?,password = ?,role = (SELECT id FROM roles WHERE value = ?) where id = ?";
     private static final String UPDATE_NP_SQL = "UPDATE users SET surName = :surName, name = :name, lastName = :lastName, email = :email,password = :password,role = (SELECT id FROM roles WHERE value = :value) where id = :id";
     private static final String DEL_BY_EMAIL_SQL = "DELETE FROM books where email = ?";
-    //    private final DataSource dataSource;
     private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate namedTemplate;
 
@@ -48,6 +47,9 @@ public class UserDAOImpl implements UserDAO {
 //        map.put("value", userDto.getRole());
 ////        map.put("id",user.getId());
 //        namedTemplate.update(INSERT_NP_SQL, (SqlParameterSource) map, keyHolder);
+//        List<Map<String, Object>> keyList = keyHolder.getKeyList();
+//        Map<String,Object> mapKey = keyList.get(0);
+//        Long id = (Long) mapKey.get("id");
 //        Long id = keyHolder.getKeyAs(Long.class);
 //        return findById(id);
         template.update((connection) -> {
@@ -60,7 +62,9 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(6, userDto.getRole().toString());
             return statement;
         }, keyHolder);
-        Long id = keyHolder.getKeyAs(Long.class);
+        List<Map<String, Object>> keyList = keyHolder.getKeyList();
+        Map<String, Object> map = keyList.get(0);
+        Long id = (Long) map.get("id");
         return findById(id);
     }
 

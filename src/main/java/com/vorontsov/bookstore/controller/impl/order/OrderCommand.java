@@ -1,4 +1,4 @@
-package com.vorontsov.bookstore.controller.impl;
+package com.vorontsov.bookstore.controller.impl.order;
 
 import com.vorontsov.bookstore.controller.Command;
 import com.vorontsov.bookstore.service.ServiceOrder;

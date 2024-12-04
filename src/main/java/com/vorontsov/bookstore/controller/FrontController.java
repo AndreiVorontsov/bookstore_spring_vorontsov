@@ -30,5 +30,22 @@ public class FrontController extends HttpServlet {
             req.getRequestDispatcher(page).forward(req, resp);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String commandParam = req.getParameter("command");
+            Command command = AppListener.getContext().getBean(commandParam, Command.class);
+            String page = command.process(req);
+            req.getRequestDispatcher(page).forward(req, resp);
+        } catch (Exception e) {
+            log.error(e);
+            Command command = AppListener.getContext().getBean("error", Command.class);
+            String page = command.process(req);
+            req.setAttribute("exception", e);
+            req.getRequestDispatcher(page).forward(req, resp);
+        }
+
+    }
 }
 

@@ -1,26 +1,27 @@
-package com.vorontsov.bookstore.controller.impl;
+package com.vorontsov.bookstore.controller.impl.order;
 
 import com.vorontsov.bookstore.controller.Command;
-import com.vorontsov.bookstore.service.ServiceBook;
-import com.vorontsov.bookstore.service.dto.BookDto;
+import com.vorontsov.bookstore.service.ServiceOrder;
+import com.vorontsov.bookstore.service.dto.OrderDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Controller("book")
+@Controller("orders_user")
 @RequiredArgsConstructor
-public class BookCommand implements Command {
-    private final ServiceBook serviceBook;
+public class OrderUserCommand implements Command {
+    private final ServiceOrder serviceOrder;
 
     @Override
     public String process(HttpServletRequest req) {
-        long id = getId(req);
-        BookDto book = serviceBook.getById(id);
-        req.setAttribute("book", book);
+        long user_id = getId(req);
+        List<OrderDto> orders = serviceOrder.findByUserId(user_id);
+        req.setAttribute("orders", orders);
         req.setAttribute("date", LocalDateTime.now());
-        return "jsp/book/book.jsp";
+        return "jsp/order/ordersUser.jsp";
     }
 
     private long getId(HttpServletRequest req) {
