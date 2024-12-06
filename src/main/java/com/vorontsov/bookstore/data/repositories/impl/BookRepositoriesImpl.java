@@ -1,77 +1,83 @@
 package com.vorontsov.bookstore.data.repositories.impl;
 
-import com.vorontsov.bookstore.data.dao.BookDAO;
-import com.vorontsov.bookstore.data.dto.BookDto;
 import com.vorontsov.bookstore.data.entity.Book;
-import com.vorontsov.bookstore.data.mapper.DataMapper;
 import com.vorontsov.bookstore.data.repositories.BookRepositories;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
+//import javax.persistence.EntityManager;
+//import javax.persistence.PersistenceContext;
+//import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-@Log4j2
+@Transactional
 public class BookRepositoriesImpl implements BookRepositories {
-    private final BookDAO bookDAO;
-    private final DataMapper dataMapperImpl;
 
+    public static final String GET_ALL = "from Book";
+
+    @PersistenceContext
+    private EntityManager manager;
+
+//    @Override
+//    public Book create(Book book) {
+//        return null;
+//    }
+//
     @Override
-    public Book create(Book book) {
-        BookDto bookDto = dataMapperImpl.mapToBookDto(book);
-        bookDto = bookDAO.create(bookDto);
-        return dataMapperImpl.mapToBook(bookDto);
+    public Book save(Book book) {
+        if (book.getId() != null){
+            manager.merge(book);
+        } else {
+            manager.persist(book);
+        }
+        return book;
     }
 
     @Override
     public List<Book> getAll() {
-        return bookDAO.getAll()
-                .stream()
-                .map(dataMapperImpl::mapToBook)
-                .toList();
+        return manager.createQuery(GET_ALL, Book.class).getResultList();
     }
-
+//
     @Override
-    public Book getById(long id) {
-        BookDto bookDto = bookDAO.getById(id);
-        return dataMapperImpl.mapToBook(bookDto);
-    }
+    public Optional<Book> getById(long id) {
 
-    @Override
-    public Book update(Book book) {
-        BookDto bookDto = dataMapperImpl.mapToBookDto(book);
-        bookDto = bookDAO.update(bookDto);
-        return dataMapperImpl.mapToBook(bookDto);
+        return Optional.ofNullable(manager.find(Book.class,id));
     }
+//
+//    @Override
+//    public Book update(Book book) {
+//        return null;
+//    }
+//
+//    @Override
+//    public boolean deleteById(long id) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean softDeleteById(long id, boolean bool) {
+//        return false;
+//    }
+//
+    @Override
+    public Optional<Book> findByIsbn(String isbn) {
+        return Optional.ofNullable(manager.find(Book.class,isbn));
+    }
+//
+//    @Override
+//    public List<Book> findByAuthor(String author) {
+//        return null;
+//    }
+//
+//    @Override
+//    public long countAll() {
+//        return 0;
+//    }
 
-    @Override
-    public boolean deleteById(long id) {
-        return bookDAO.deleteById(id);
-    }
 
-    @Override
-    public boolean softDeleteById(long id, boolean bool) {
-        return bookDAO.softDeleteById(id, bool);
-    }
-
-    @Override
-    public Book findByIsbn(String isbn) {
-        BookDto bookDto = bookDAO.findByIsbn(isbn);
-        return dataMapperImpl.mapToBook(bookDto);
-    }
-
-    @Override
-    public List<Book> findByAuthor(String author) {
-        return bookDAO.findByAuthor(author)
-                .stream()
-                .map(dataMapperImpl::mapToBook)
-                .toList();
-    }
-
-    @Override
-    public long countAll() {
-        return bookDAO.countAll();
-    }
 }

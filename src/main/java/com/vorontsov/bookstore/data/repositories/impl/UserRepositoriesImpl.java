@@ -1,80 +1,70 @@
 package com.vorontsov.bookstore.data.repositories.impl;
 
-import com.vorontsov.bookstore.data.dao.UserDAO;
-import com.vorontsov.bookstore.data.dto.UserDto;
+
 import com.vorontsov.bookstore.data.entity.User;
-import com.vorontsov.bookstore.data.mapper.DataMapper;
 import com.vorontsov.bookstore.data.repositories.UserRepositories;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+//import javax.persistence.EntityManager;
+//import javax.persistence.PersistenceContext;
+//import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-@Log4j2
+@Transactional
 public class UserRepositoriesImpl implements UserRepositories {
-    private final UserDAO userDAO;
-    private final DataMapper dataMapperImpl;
+    public static final String GET_ALL = "from User";
 
+    @PersistenceContext
+    private EntityManager manager;
 
     @Override
     public User create(User user) {
-        UserDto userDto = dataMapperImpl.mapToUserDto(user);
-        userDto = userDAO.create(userDto);
-        return dataMapperImpl.mapToUser(userDto);
+        return null;
     }
 
     @Override
-    public List<User> getAll() {
-        return userDAO.getAll()
-                .stream()
-                .map(dataMapperImpl::mapToUser)
-                .toList();
+    public User save(User user) {
+        return null;
     }
 
     @Override
-    public User findByEmail(String email) {
-        UserDto userDto = userDAO.findByEmail(email);
-        if (userDto == null) {
-            log.error(" UserRepositoriesImpl No user with email:" + email);
-//            throw new RuntimeException("No user with email:" + email);
-            return null;
-        }
-        return dataMapperImpl.mapToUser(userDto);
+    public List<User> findAll() {
+        return manager.createQuery(GET_ALL, User.class).getResultList();
     }
 
     @Override
-    public User findById(Long id) {
-        UserDto userDto = userDAO.findById(id);
-        return dataMapperImpl.mapToUser(userDto);
+    public Optional<User> findByEmail(String email) {
+        return null;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return null;
     }
 
     @Override
     public List<User> findByLastName(String lastName) {
-        return userDAO.findByLastName(lastName)
-                .stream()
-                .map(dataMapperImpl::mapToUser)
-                .toList();
+        return null;
     }
 
     @Override
     public long countAll() {
-
-        return userDAO.countAll();
+        return 0;
     }
 
     @Override
     public User update(User user) {
-        UserDto userDto = dataMapperImpl.mapToUserDto(user);
-        userDto = userDAO.update(userDto);
-        return dataMapperImpl.mapToUser(userDto);
+        return null;
     }
 
     @Override
     public boolean deleteByEmail(String email) {
-
-        return userDAO.deleteByEmail(email);
+        return false;
     }
+
 }

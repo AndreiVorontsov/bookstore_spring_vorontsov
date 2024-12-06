@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public List<UserDto> getAll() {
         log.debug("Get All");
-        return userRepositoriesImpl.getAll()
+        return userRepositoriesImpl.findAll()
                 .stream()
                 .map(mapperImpl::mapToUserDto)
                 .toList();
@@ -51,7 +52,10 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public UserDto getByEmail(String email) {
-        User user = userRepositoriesImpl.findByEmail(email);
+//        User user = userRepositoriesImpl.findByEmail(email);
+//        return mapperImpl.mapToUserDto(user);
+        Optional<User> box = userRepositoriesImpl.findByEmail(email);
+        User user = box.orElseThrow();
         return mapperImpl.mapToUserDto(user);
     }
 
@@ -75,7 +79,9 @@ public class ServiceUserImpl implements ServiceUser {
     @Override
     public UserDto login(String email, String password) {
         log.debug("Get User with email = {} password = {}", email, password);
-        User user = userRepositoriesImpl.findByEmail(email);
+//        User user = userRepositoriesImpl.findByEmail(email);
+        Optional<User> box = userRepositoriesImpl.findByEmail(email);
+        User user = box.orElseThrow();
         if (user.getPassword().equals(password)) {
             return mapperImpl.mapToUserDto(user);
         } else {

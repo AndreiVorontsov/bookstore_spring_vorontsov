@@ -6,12 +6,13 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class OrderDto {
     private Long id;
-    private Timestamp date;
+    private LocalDateTime date;
     private User user;
     private Status status;
     private BigDecimal price;

@@ -8,10 +8,9 @@ import com.vorontsov.bookstore.service.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,24 +34,17 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto getById(Long id) {
         log.debug("Get by Id" + id);
-        Book book = bookRepositories.getById(id);
-        if (book == null) {
-            log.error("No book with id:" + id);
-            throw new RuntimeException("No book with id:" + id);
-        }
-        return mapperImpl.mapToBookDto(bookRepositories.getById(id));
+       Optional<Book> box = bookRepositories.getById(id);
+       Book book = box.orElseThrow();
+       return mapperImpl.mapToBookDto(book);
     }
 
     @Override
     public BookDto getByIsbn(String isbn) {
         log.debug("Get by Isbn" + isbn);
-        Book book = bookRepositories.findByIsbn(isbn);
-        if (book == null) {
-            return null;
-        } else {
-            return mapperImpl.mapToBookDto(bookRepositories.findByIsbn(isbn));
-        }
-
+        Optional<Book> box = bookRepositories.findByIsbn(isbn);
+        Book book = box.orElseThrow();
+        return mapperImpl.mapToBookDto(book);
     }
 
 
@@ -61,7 +53,7 @@ public class ServiceBookImpl implements ServiceBook {
         log.debug("Create: " + bookDto);
         if (getByIsbn(bookDto.getIsbn()) == null) {
             Book book = mapperImpl.mapToBook(bookDto);
-            book = bookRepositories.create(book);
+            book = bookRepositories.save(book);
             return mapperImpl.mapToBookDto(book);
         } else {
             return null;
@@ -71,10 +63,9 @@ public class ServiceBookImpl implements ServiceBook {
     @Override
     public BookDto update(BookDto bookDto) {
         log.debug("Update: " + bookDto);
-
         if (getByIsbn(bookDto.getIsbn()).getId().equals(bookDto.getId())) {
             Book book = mapperImpl.mapToBook(bookDto);
-            book = bookRepositories.update(book);
+            book = bookRepositories.save(book);
             return mapperImpl.mapToBookDto(book);
         } else {
             return null;
@@ -82,38 +73,38 @@ public class ServiceBookImpl implements ServiceBook {
     }
 
 
-    @Override
-    public void delete(long id) {
-        log.debug("Delete" + id);
-        boolean success = bookRepositories.deleteById(id);
-        if (!success) {
-            log.error("Couldn't delete book (id=" + id + ")");
-            throw new RuntimeException("Couldn't delete book (id=" + id + ")");
-        }
-    }
+//    @Override
+//    public void delete(long id) {
+//        log.debug("Delete" + id);
+//        boolean success = bookRepositories.deleteById(id);
+//        if (!success) {
+//            log.error("Couldn't delete book (id=" + id + ")");
+//            throw new RuntimeException("Couldn't delete book (id=" + id + ")");
+//        }
+//    }
+//
+//    @Override
+//    public void softDelete(long id, boolean bool) {
+//        boolean success = bookRepositories.softDeleteById(id, bool);
+//        if (!success) {
+//            log.error("Couldn't softDelete book (id=" + id + ")");
+//            throw new RuntimeException("Couldn't softDelete book (id=" + id + ")");
+//        }
+//    }
 
-    @Override
-    public void softDelete(long id, boolean bool) {
-        boolean success = bookRepositories.softDeleteById(id, bool);
-        if (!success) {
-            log.error("Couldn't softDelete book (id=" + id + ")");
-            throw new RuntimeException("Couldn't softDelete book (id=" + id + ")");
-        }
-    }
-
-    @Override
-    public BigDecimal getTotalCostByAuthor(String author) {
-        log.debug("getTotalCostByAuthor" + author);
-        BigDecimal summ = new BigDecimal("0");
-        for (Book book : bookRepositories.findByAuthor(author)) {
-            if (book.getPrice() != null) {
-                summ = summ.add(book.getPrice());
-            } else {
-                log.debug("Not Price" + book);
-            }
-        }
-        System.out.println(summ);
-        return summ;
-    }
+//    @Override
+//    public BigDecimal getTotalCostByAuthor(String author) {
+//        log.debug("getTotalCostByAuthor" + author);
+//        BigDecimal summ = new BigDecimal("0");
+//        for (Book book : bookRepositories.findByAuthor(author)) {
+//            if (book.getPrice() != null) {
+//                summ = summ.add(book.getPrice());
+//            } else {
+//                log.debug("Not Price" + book);
+//            }
+//        }
+//        System.out.println(summ);
+//        return summ;
+//    }
 
 }
