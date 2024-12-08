@@ -18,9 +18,9 @@ public interface ServiceBook {
 
     BookDto update(BookDto bookDto);
 
-//    void delete(long id);
-//
-//    void softDelete(long id, boolean bool);
+    void delete(long id);
 
-//    public BigDecimal getTotalCostByAuthor(String author);
+    void softDelete(long id, boolean bool);
+
+    public BigDecimal getTotalCostByAuthor(String author);
 }

@@ -37,7 +37,7 @@ public class ServiceUserImpl implements ServiceUser {
 
         log.debug("Create {}", userDto);
         User user = mapperImpl.mapToUser(userDto);
-        user = userRepositoriesImpl.create(user);
+        user = userRepositoriesImpl.save(user);
         return mapperImpl.mapToUserDto(user);
     }
 
@@ -63,7 +63,7 @@ public class ServiceUserImpl implements ServiceUser {
     public UserDto update(UserDto userDto) {
         log.debug("Update {}", userDto);
         User user = mapperImpl.mapToUser(userDto);
-        user = userRepositoriesImpl.update(user);
+        user = userRepositoriesImpl.save(user);
         return mapperImpl.mapToUserDto(user);
     }
 

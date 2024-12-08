@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepositories {
-    User create(User user);
 
     User save(User user);
 
@@ -20,7 +19,7 @@ public interface UserRepositories {
 
     long countAll();
 
-    User update(User user);
+    boolean deleteById(long id);
 
     boolean deleteByEmail(String email);
 }

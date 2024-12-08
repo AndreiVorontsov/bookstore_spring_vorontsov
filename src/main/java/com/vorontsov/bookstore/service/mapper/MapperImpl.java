@@ -20,7 +20,7 @@ public class MapperImpl implements Mapper {
         bookDto.setIsbn(book.getIsbn());
         bookDto.setCover(BookDto.Cover.valueOf(String.valueOf(book.getCover())));
         bookDto.setPrice(book.getPrice());
-        bookDto.setYearPublication(book.getYearPublication());
+        bookDto.setYearPublication(book.getYear_publication());
         bookDto.setDelete(book.isDelete());
         return bookDto;
     }
@@ -34,7 +34,7 @@ public class MapperImpl implements Mapper {
         book.setIsbn(bookDto.getIsbn());
         book.setCover(Book.Cover.valueOf(bookDto.getCover().toString()));
         book.setPrice(bookDto.getPrice());
-        book.setYearPublication(bookDto.getYearPublication());
+        book.setYear_publication(bookDto.getYearPublication());
         book.setDelete(bookDto.isDelete());
         return book;
     }

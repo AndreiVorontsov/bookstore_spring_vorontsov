@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepositories {
-    Order create(Order order);
+//    Order create(Order order);
 
     Order save (Order order);
 
@@ -18,5 +18,5 @@ public interface OrderRepositories {
 
     long countAll();
 
-    Order update(Order order);
+//    Order update(Order order);
 }

@@ -23,7 +23,7 @@ public class ServiceOrderImpl implements ServiceOrder {
     @Override
     public OrderDto create(OrderDto orderDto) {
         Order order = mapperImpl.mapToOrder(orderDto);
-        order = orderRepositories.create(order);
+        order = orderRepositories.save(order);
         orderDto = mapperImpl.mapToOrderDto(order);
 
         return orderDto;
@@ -53,7 +53,7 @@ public class ServiceOrderImpl implements ServiceOrder {
     @Override
     public OrderDto update(OrderDto orderDto) {
         Order order = mapperImpl.mapToOrder(orderDto);
-        order = orderRepositories.update(order);
+        order = orderRepositories.save(order);
         orderDto = mapperImpl.mapToOrderDto(order);
         return orderDto;
     }
