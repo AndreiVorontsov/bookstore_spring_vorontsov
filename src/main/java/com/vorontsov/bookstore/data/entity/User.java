@@ -12,16 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-//import javax.persistence.AttributeConverter;
-//import javax.persistence.Column;
-//import javax.persistence.Convert;
-//import javax.persistence.Converter;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
-
 @Entity
 @Table(name = "users")
 @Data

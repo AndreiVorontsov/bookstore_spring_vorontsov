@@ -1,14 +1,13 @@
-package com.vorontsov.bookstore.data.repositories;
+package com.vorontsov.bookstore.data.repository;
 
 import com.vorontsov.bookstore.data.entity.Order;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepositories {
-//    Order create(Order order);
+public interface OrderRepository {
 
-    Order save (Order order);
+    Order save(Order order);
 
     List<Order> getAll();
 
@@ -17,6 +16,4 @@ public interface OrderRepositories {
     List<Order> findByUserId(Long user_id);
 
     long countAll();
-
-//    Order update(Order order);
 }

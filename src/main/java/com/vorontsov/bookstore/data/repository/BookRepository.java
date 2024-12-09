@@ -1,12 +1,12 @@
-package com.vorontsov.bookstore.data.repositories;
+package com.vorontsov.bookstore.data.repository;
 
 import com.vorontsov.bookstore.data.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BookRepositories {
-    Book save (Book book);
+public interface BookRepository {
+    Book save(Book book);
 
     List<Book> getAll();
 

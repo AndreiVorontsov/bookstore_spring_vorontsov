@@ -1,11 +1,11 @@
-package com.vorontsov.bookstore.data.repositories;
+package com.vorontsov.bookstore.data.repository;
 
 import com.vorontsov.bookstore.data.entity.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepositories {
+public interface UserRepository {
 
     User save(User user);
 

@@ -1,22 +1,19 @@
-package com.vorontsov.bookstore.data.repositories.impl;
+package com.vorontsov.bookstore.data.repository.impl;
 
 
 import com.vorontsov.bookstore.data.entity.User;
-import com.vorontsov.bookstore.data.repositories.UserRepositories;
+import com.vorontsov.bookstore.data.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
-//import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceContext;
-//import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Transactional
-public class UserRepositoriesImpl implements UserRepositories {
+public class UserRepositoryImpl implements UserRepository {
     public static final String GET_ALL = "from User";
     public static final String GET_LAST_NAME = "from User where lastName = ?1";
     private static final String GET_COUNT_ALL = "count(*) from User";
@@ -28,7 +25,7 @@ public class UserRepositoriesImpl implements UserRepositories {
 
     @Override
     public User save(User user) {
-        if (user.getId() != null){
+        if (user.getId() != null) {
             manager.merge(user);
         } else {
             manager.persist(user);
@@ -47,35 +44,35 @@ public class UserRepositoriesImpl implements UserRepositories {
     @Override
     public Optional<User> findByEmail(String email) {
         return Optional.ofNullable(manager
-                .createQuery(GET_BY_EMAIL,User.class)
-                .setParameter(1,email)
+                .createQuery(GET_BY_EMAIL, User.class)
+                .setParameter(1, email)
                 .getSingleResult());
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(manager.find(User.class,id));
+        return Optional.ofNullable(manager.find(User.class, id));
     }
 
     @Override
     public List<User> findByLastName(String lastName) {
         return manager
                 .createQuery(GET_LAST_NAME, User.class)
-                .setParameter(1,lastName)
+                .setParameter(1, lastName)
                 .getResultList();
     }
 
     @Override
     public long countAll() {
         return manager
-                .createQuery(GET_COUNT_ALL,Long.class)
+                .createQuery(GET_COUNT_ALL, Long.class)
                 .getSingleResult();
     }
 
     @Override
     public boolean deleteById(long id) {
-        User user = manager.find(User.class,id);
-        if (user != null){
+        User user = manager.find(User.class, id);
+        if (user != null) {
             manager.remove(user);
             return true;
         }
@@ -86,7 +83,7 @@ public class UserRepositoriesImpl implements UserRepositories {
     public boolean deleteByEmail(String email) {
         Optional<User> box = findByEmail(email);
         User user = box.orElse(null);
-        if (user != null){
+        if (user != null) {
             manager.remove(user);
             return true;
         }

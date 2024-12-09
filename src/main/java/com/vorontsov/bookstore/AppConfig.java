@@ -1,6 +1,5 @@
 package com.vorontsov.bookstore;
 
-
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.springframework.context.annotation.Bean;
@@ -11,19 +10,18 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
 public class AppConfig {
 
     @Bean
-    public EntityManagerFactory entityManagerFactory(){
+    public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("psql");
     }
 
     @Bean
-    public TransactionManager transactionManager(EntityManagerFactory factory){
+    public TransactionManager transactionManager(EntityManagerFactory factory) {
         return new JpaTransactionManager(factory);
     }
 
