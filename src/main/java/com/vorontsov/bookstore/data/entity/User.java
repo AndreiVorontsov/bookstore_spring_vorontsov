@@ -57,7 +57,7 @@ public class User {
     }
 
     @Converter
-    public class RoleConvert implements AttributeConverter<Role, Integer> {
+    public static class RoleConvert implements AttributeConverter<Role, Integer> {
 
         @Override
         public Integer convertToDatabaseColumn(Role role) {
