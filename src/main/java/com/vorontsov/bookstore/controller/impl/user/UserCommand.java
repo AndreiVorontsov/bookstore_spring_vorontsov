@@ -18,18 +18,9 @@ public class UserCommand implements Command {
     @Override
     public String process(HttpServletRequest req) {
         String email = req.getParameter("email");
-        if (email == null) {
-            req.setAttribute("error_command", req.getQueryString());
-            return "jsp/error/error.jsp";
-        }
         UserDto user = serviceUser.getByEmail(email);
-        if (user != null) {
-            req.setAttribute("user", user);
-            req.setAttribute("date", LocalDateTime.now());
-            return "jsp/user/user.jsp";
-        } else {
-            req.setAttribute("error_email", email);
-            return "jsp/error/error.jsp";
-        }
+        req.setAttribute("user", user);
+        req.setAttribute("date", LocalDateTime.now());
+        return "jsp/user/user.jsp";
     }
 }
