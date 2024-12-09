@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,12 +50,7 @@ public class Order {
     @Column(name = "price")
     private BigDecimal price;
 
-
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.REFRESH)
-
-    //   @OneToMany(cascade = CascadeType.REFRESH)
-//   @JoinColumn(name = "order_id")
-    @OneToMany(mappedBy = "order", cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
 
     public enum Status {
