@@ -1,6 +1,6 @@
-package com.vorontsov.bookstore.controller.impl.order;
+package com.vorontsov.bookstore.web.controller.impl.order;
 
-import com.vorontsov.bookstore.controller.Command;
+import com.vorontsov.bookstore.web.controller.Command;
 import com.vorontsov.bookstore.service.ServiceOrder;
 import com.vorontsov.bookstore.service.dto.OrderDto;
 import jakarta.servlet.http.HttpServletRequest;

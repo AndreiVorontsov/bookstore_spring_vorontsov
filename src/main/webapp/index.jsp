@@ -1,10 +1,10 @@
 <html>
     <head>
         <title>Home</title>
-        <link rel="stylesheet" type="text/css" href="css/button/button1.css">
+        <link rel="stylesheet" type="text/css" href="src/main/resources/static/css/button/button1.css">
         <style>
             body {
-            background-image: url("imag/home_page.jpg");
+            background-image: url("src/main/resources/static/imag/home_page.jpg");
             background-repeat: no-repeat;
             background-size: cover;
           }

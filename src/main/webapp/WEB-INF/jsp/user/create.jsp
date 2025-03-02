@@ -7,7 +7,7 @@
    <body>
        <jsp:include page="../navbar.jsp"/>
            <h1>Register new user</h1>
-           <form action="controller" method="post" >
+           <form action="create" method="post" >
                 <input name="command" value="create_user" type="hidden"/>
 
                 <label for="email-input">Email: </label>

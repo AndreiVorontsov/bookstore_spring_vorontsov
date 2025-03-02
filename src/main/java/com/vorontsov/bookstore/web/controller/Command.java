@@ -1,4 +1,4 @@
-package com.vorontsov.bookstore.controller;
+package com.vorontsov.bookstore.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 

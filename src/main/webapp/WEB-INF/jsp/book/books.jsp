@@ -21,7 +21,7 @@
         <c:forEach items="${books}" var="book">
             <tr>
                 <td>${book.id}</td>
-                <td><a href="/controller?command=book&id=${book.id}">| ${book.name}</a></td>
+                <td><a href="/books/${book.id}">| ${book.name}</a></td>
                 <th>| ${book.author}</th>
                 <th>| ${book.isbn}</th>
                 <th>| ${book.cover}</th>

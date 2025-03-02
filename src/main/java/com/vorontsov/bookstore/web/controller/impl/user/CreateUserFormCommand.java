@@ -1,6 +1,6 @@
-package com.vorontsov.bookstore.controller.impl.user;
+package com.vorontsov.bookstore.web.controller.impl.user;
 
-import com.vorontsov.bookstore.controller.Command;
+import com.vorontsov.bookstore.web.controller.Command;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

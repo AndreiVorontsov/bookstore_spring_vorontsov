@@ -17,7 +17,7 @@
         <c:forEach items="${users}" var="user">
             <tr>
                 <td>${user.id}</td>
-                <td><a href="/controller?command=user&email=${user.email}">| ${user.email}</a></td>
+                <td><a href="/users/${user.email}">| ${user.email}</a></td>
                 <th>| ${user.role}</th>
             </tr>
         </c:forEach>
