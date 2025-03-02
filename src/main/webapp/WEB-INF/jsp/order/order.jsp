@@ -19,13 +19,13 @@
             <th>Status</th>
         </tr>
         <tr>   
-            <td><a href="/controller?command=order&id=${requestScope.order.id}">${order.id}</a></td>
-            <td><a href="/controller?command=user&email=${requestScope.order.user.email}">${order.user.email}</a></td>
+            <td><a href="/orders/${requestScope.order.id}">${order.id}</a></td>
+            <td><a href="/users/${requestScope.order.user.email}">${order.user.email}</a></td>
             <td>
                 <table>
                     <c:forEach items="${requestScope.order.orderItems}" var="orderItem">
                         <tr>
-                            <td><a href="/controller?command=book&id=${orderItem.book.id}">${orderItem.book.name}</a></td>
+                            <td><a href="/books/${orderItem.book.id}">${orderItem.book.name}</a></td>
                             <td>$${orderItem.bookPrice} x ${orderItem.quantity}</td>
                         </tr>
                     </c:forEach>

@@ -22,13 +22,13 @@
         <c:forEach items="${requestScope.orders}" var="order" varStatus="counter">
             <tr>
                 <td>${counter.count}</td>
-                <td><a href="/controller?command=order&id=${order.id}">${order.id}</a></td>
-                <td><a href="/controller?command=user&email=${order.user.email}">${order.user.email}</a></td>
+                <td><a href="/orders/${order.id}">${order.id}</a></td>
+                <td><a href="/users/${order.user.email}">${order.user.email}</a></td>
                 <td>
                     <ul>
                         <c:forEach items="${order.orderItems}" var="orderItem">
                             <li>${orderItem.quantity} x <a
-                            href="/controller?command=book&id=${orderItem.book.id}">${orderItem.book.name}</a></li>
+                            href="/books/${orderItem.book.id}">${orderItem.book.name}</a></li>
                         </c:forEach>
                     </ul>
                     TOTAL PRICE: ${order.price} USD

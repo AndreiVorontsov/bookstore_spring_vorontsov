@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Controller("books")
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/books")
 public class BooksController {
