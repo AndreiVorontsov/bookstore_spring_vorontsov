@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Home</title>
@@ -12,6 +13,9 @@
 
     </head>
     <body>
-        <jsp:include page="WEB-INF/jsp/navbar.jsp"/>
+        <jsp:include page="../jsp/navbar.jsp"/>
+         <c:if test="${sessionScope.user != null}">
+         <h2>Glad to see you again, ${sessionScope.user.login}</h2>
+         </c:if>
     </body>
 </html>

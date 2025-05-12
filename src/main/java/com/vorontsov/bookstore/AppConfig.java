@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -28,6 +29,15 @@ public class AppConfig extends WebMvcConfigurationSupport {
 
         viewResolver.setViewClass(JstlView.class);
         return viewResolver;
+    }
+
+//    private final SwaggerIndexTransformer swaggerIndexTransformer;
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry){
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/");
     }
 
     @Bean

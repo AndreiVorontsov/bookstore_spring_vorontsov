@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Users</title>
-    <link rel="stylesheet" type="text/css" href="css/button/button1.css">
+    <link rel="stylesheet" type="text/css" href="../css/button/button1.css">
 </head>
 <body>
     <jsp:include page="../navbar.jsp"/>

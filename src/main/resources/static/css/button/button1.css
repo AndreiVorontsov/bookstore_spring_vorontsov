@@ -10,8 +10,8 @@
             margin: 4px 2px;
             cursor: pointer;
         }
-.body {
-     background: url("image/home_page.jpg");
+.image{
+     background: url("static/images/home_page.jpg");
      background-repeat: no-repeat;
      background-size: cover;
      }
