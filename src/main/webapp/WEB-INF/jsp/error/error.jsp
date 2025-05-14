@@ -6,16 +6,8 @@
 </head>
 <body>
     <jsp:include page="../navbar.jsp"/>
-    <h1>Error</h1>
-        <p>Something went wrong ...</p>
-        <c:if test="${error_command!=null}">
-        <p>invalid value -> ${error_command} </p>
-        </c:if>
-        <c:if test="${error_email!=null}">
-            <p>invalid email -> ${error_email}</p>
-        </c:if>
-        <c:if test="${exception!=null}">
-            <p>${exception}</p>
-        </c:if>
+    <h1>Error occurred...</h1>
+        <p>Status: ${status}</p>
+        <p>Reason: ${massage}</p>
 </body>
 </html>    
