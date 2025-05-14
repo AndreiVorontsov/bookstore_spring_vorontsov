@@ -5,6 +5,9 @@
     <link rel="stylesheet" type="text/css" href="css/button/button1.css">
 </head>
 <body>
+   <ul>
+      <li><a href="/">Home</a></li>
+   </ul>
     <jsp:include page="../navbar.jsp"/>
     <h1>Error occurred...</h1>
         <p>Status: ${status}</p>

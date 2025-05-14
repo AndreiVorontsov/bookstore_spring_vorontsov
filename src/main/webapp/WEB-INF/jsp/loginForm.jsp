@@ -6,11 +6,6 @@
       <link rel="stylesheet" type="text/css" href="../css/button/button1.css">
     </head>
    <body>
-
-   <ul>
-   <li><a href="/">Home</a></li>
-   </ul>
-
        <jsp:include page="../jsp/navbar.jsp"/>
            <h1>Login</h1>
            <form class="login-form" action="login" method="post" >

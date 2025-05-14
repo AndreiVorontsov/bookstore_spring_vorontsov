@@ -24,12 +24,12 @@ public class LoginController {
     public String login(@RequestParam String login, @RequestParam String password, HttpSession session) {
         UserDto userDto = serviceUser.login(login,password);
         session.setAttribute("user", userDto );
-        return "index";
+        return "home_login";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
-        return "index";
+        return "home_login";
     }
 }
