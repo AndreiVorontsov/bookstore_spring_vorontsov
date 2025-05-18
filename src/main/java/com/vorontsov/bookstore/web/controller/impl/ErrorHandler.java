@@ -3,7 +3,6 @@ package com.vorontsov.bookstore.web.controller.impl;
 import com.vorontsov.bookstore.service.exception.AppException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

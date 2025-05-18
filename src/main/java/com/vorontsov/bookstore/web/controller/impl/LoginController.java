@@ -1,6 +1,5 @@
 package com.vorontsov.bookstore.web.controller.impl;
 
-import com.vorontsov.bookstore.data.entity.User;
 import com.vorontsov.bookstore.service.ServiceUser;
 import com.vorontsov.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpSession;
