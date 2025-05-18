@@ -5,7 +5,9 @@ import com.vorontsov.bookstore.data.repository.UserRepository;
 import com.vorontsov.bookstore.service.ServiceUser;
 import com.vorontsov.bookstore.service.dto.UserCreateDto;
 import com.vorontsov.bookstore.service.dto.UserDto;
+import com.vorontsov.bookstore.service.exception.AppException;
 import com.vorontsov.bookstore.service.mapper.Mapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+//@Transactional
 public class ServiceUserImpl implements ServiceUser {
     private final UserRepository userRepositoryImpl;
     private final Mapper mapperImpl;
@@ -75,7 +78,7 @@ public class ServiceUserImpl implements ServiceUser {
         if (user.getPassword().equals(password)) {
             return mapperImpl.mapToUserDto(user);
         } else {
-            throw new RuntimeException("Incorrect password: " + password);
+            throw new AppException("Incorrect password: " + password);
         }
     }
 }

@@ -1,0 +1,17 @@
+.button1{
+            background-color: bisque;
+            bottom: none;
+            color: blue;
+            padding: 20px 34px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+.image{
+     background: url("static/images/home_page.jpg");
+     background-repeat: no-repeat;
+     background-size: cover;
+     }

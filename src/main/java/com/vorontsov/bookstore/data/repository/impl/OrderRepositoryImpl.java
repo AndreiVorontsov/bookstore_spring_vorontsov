@@ -16,7 +16,7 @@ import java.util.Optional;
 public class OrderRepositoryImpl implements OrderRepository {
     private static final String GET_COUNT_ALL = "count(*) from Order";
     public static final String GET_ALL = "from Order";
-    private static final String GET_BY_USER_ID = "from Order where user_id = ?1";
+    private static final String GET_BY_USER_ID = "from Order where user.id = ?1";
 
     @PersistenceContext
     private EntityManager manager;
